@@ -19,7 +19,7 @@ public class ConsoleQuizServiceImpl implements ConsoleQuizService {
 
     @Override
     public void printAllQuestions() {
-        var questions = questionDao.findAll();
+        List<Question> questions = questionDao.findAll();
 
         System.out.println("===============================================");
         System.out.println("#  List of the Quiz questions:");
