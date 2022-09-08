@@ -1,5 +1,5 @@
 package io.github.maxixcom.otus.quiz.service;
 
-public interface ConsoleQuizService {
+public interface QuizService {
     void printAllQuestions();
 }

@@ -4,11 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="questionLoader" class="io.github.maxixcom.otus.quiz.dao.csv.QuestionCsvResourceLoader"/>
+    <bean id="questionLoader" class="io.github.maxixcom.otus.quiz.dao.csv.QuestionCsvResourceLoader">
+        <constructor-arg name="questionFile" value="quiz/questions.csv"/>
+    </bean>
     <bean id="questionDao" class="io.github.maxixcom.otus.quiz.dao.QuestionDaoImpl">
         <constructor-arg name="questionLoader" ref="questionLoader"/>
     </bean>
-    <bean id="consoleQuizService" class="io.github.maxixcom.otus.quiz.service.ConsoleQuizServiceImpl">
+    <bean id="outputService" class="io.github.maxixcom.otus.quiz.service.OutputServiceImpl">
+        <constructor-arg name="printStream" value="#{T(System).out}" />
+    </bean>
+    <bean id="quizService" class="io.github.maxixcom.otus.quiz.service.QuizServiceImpl">
         <constructor-arg name="questionDao" ref="questionDao"/>
+        <constructor-arg name="outputService" ref="outputService"/>
     </bean>
 </beans>

@@ -5,14 +5,14 @@ import io.github.maxixcom.otus.quiz.domain.Question;
 import java.util.List;
 
 public class QuestionDaoImpl implements QuestionDao {
-    private final List<Question> questions;
+    private final QuestionLoader questionLoader;
 
     public QuestionDaoImpl(QuestionLoader questionLoader) {
-        this.questions = questionLoader.load();
+        this.questionLoader = questionLoader;
     }
 
     @Override
     public List<Question> findAll() {
-        return questions;
+        return questionLoader.load();
     }
 }

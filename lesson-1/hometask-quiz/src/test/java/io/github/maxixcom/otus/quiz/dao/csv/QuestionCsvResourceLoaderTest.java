@@ -10,7 +10,7 @@ class QuestionCsvResourceLoaderTest {
 
     @Test
     void shouldLoadOnlyCorrectLines() {
-        QuestionLoader questionLoader = new QuestionCsvResourceLoader();
+        QuestionLoader questionLoader = new QuestionCsvResourceLoader("questions.csv");
         var questions = questionLoader.load();
 
         Assertions.assertThat(questions).size().isEqualTo(3);

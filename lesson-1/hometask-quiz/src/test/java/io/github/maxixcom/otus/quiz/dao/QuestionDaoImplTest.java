@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuestionDaoImplTest {
 
     @Mock
-    QuestionLoader questionLoader;
+    private QuestionLoader questionLoader;
 
     @Test
     void findAll() {
