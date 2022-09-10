@@ -1,5 +1,5 @@
-choice;How many legs does spider have;4,6,8,10
-general;What is your favorite car brand and why;
-choice;Is it true that cats eat humans;yes,no
-general;What is your favorite book;
-choice;Where do babies come from;stork,mom,heaven
+choice;What of the following is the default value of an instance variable?;null,0,Depends upon the type of variable,Not assigned;2
+choice;What is the size of char variable?;8 bit,16 bit,32 bit,64 bit;1
+choice;A class always has a default constructor;yes,no;1
+choice;Deletion is faster in LinkedList than ArrayList;yes,no;0
+general;What is the base class of all java classes;;Object

@@ -13,6 +13,6 @@ class QuestionCsvResourceLoaderTest {
         QuestionLoader questionLoader = new QuestionCsvResourceLoader("questions.csv");
         var questions = questionLoader.load();
 
-        Assertions.assertThat(questions).size().isEqualTo(3);
+        Assertions.assertThat(questions).size().isEqualTo(2);
     }
 }

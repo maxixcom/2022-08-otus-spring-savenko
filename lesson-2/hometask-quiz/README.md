@@ -27,7 +27,19 @@
 ## Имплементация
 
 Вопросы Quiz необходимо разместить в файле в папке с ресурсами `src/main/resources` и указать путь к нему в файле 
-настроек `application.properties`. 
+настроек `application.properties`. Например:
+
+```properties
+quiz.questions.file=quiz/questions.csv
+```
+
+Вы также можете в файле `application.properties` указать долю (0..1) правильных ответов для того чтобы тест 
+был признан успешным:
+
+```properties
+quiz.correct-answers-ratio=0.75
+```
+
 
 ### Формат файла Quiz
 

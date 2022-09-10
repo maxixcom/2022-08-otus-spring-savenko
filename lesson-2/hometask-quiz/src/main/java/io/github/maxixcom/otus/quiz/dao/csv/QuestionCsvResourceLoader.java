@@ -1,9 +1,13 @@
 package io.github.maxixcom.otus.quiz.dao.csv;
 
 import io.github.maxixcom.otus.quiz.dao.QuestionLoader;
+import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
 import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
+import io.github.maxixcom.otus.quiz.exceptions.UnknownQuestionTypeException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.io.BufferedReader;
@@ -14,10 +18,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class QuestionCsvResourceLoader implements QuestionLoader {
+    private final static int CSV_RECORD_COLUMNS_COUNT = 4;
+    private final static int CSV_COLUMN_INDEX_TYPE = 0;
+    private final static int CSV_COLUMN_INDEX_QUESTION = 1;
+    private final static int CSV_COLUMN_INDEX_OPTIONS = 2;
+    private final static int CSV_COLUMN_INDEX_ANSWER = 3;
+
     private final String questionFile;
 
-    public QuestionCsvResourceLoader(String questionFile) {
+    public QuestionCsvResourceLoader(@Value("${quiz.questions.file}") String questionFile) {
         this.questionFile = questionFile;
     }
 
@@ -43,44 +54,26 @@ public class QuestionCsvResourceLoader implements QuestionLoader {
     }
 
     private Boolean validateCsvRecord(List<String> columns) {
-        if (columns.isEmpty()) {
+        if (columns.size() != CSV_RECORD_COLUMNS_COUNT) {
             return false;
         }
 
-        CsvRecordType csvRecordType = CsvRecordType.fromStringOrNull(columns.get(0));
+        CsvRecordType csvRecordType = CsvRecordType.fromStringOrNull(
+                columns.get(CSV_COLUMN_INDEX_TYPE)
+        );
 
-        if (csvRecordType == null) {
-            return false;
-        }
-
-        switch (csvRecordType) {
-            case General:
-                return validateRecordOfGeneralType(columns);
-            case Choice:
-                return validateRecordOfChoiceType(columns);
-        }
-
-        return false;
+        return csvRecordType != null;
     }
 
-    private Boolean validateRecordOfChoiceType(List<String> columns) {
-        if (columns.size() < 3) {
-            return false;
-        }
-        return true;
-    }
-
-    private Boolean validateRecordOfGeneralType(List<String> columns) {
-        if (columns.size() < 2) {
-            return false;
-        }
-        return true;
-    }
 
     private Question convertCsvRecordToQuestion(List<String> columns) {
-        CsvRecordType csvRecordType = CsvRecordType.fromStringOrNull(columns.get(0));
+        String typeColumnValue = columns.get(CSV_COLUMN_INDEX_TYPE);
 
-        Assert.state(csvRecordType != null, "Undefined csv record type");
+        CsvRecordType csvRecordType = CsvRecordType.fromStringOrNull(typeColumnValue);
+
+        if (csvRecordType == null) {
+            throw new UnknownQuestionTypeException(typeColumnValue);
+        }
 
         switch (csvRecordType) {
             case General:
@@ -89,19 +82,30 @@ public class QuestionCsvResourceLoader implements QuestionLoader {
                 return convertCsvRecordToQuestionChoice(columns);
         }
 
-        Assert.isTrue(true, "Unknown csv record type: " + csvRecordType.getCode());
-
-        return null;
+        // Theoretically unreachable point if programmer is good one and have added all the switch cases ;)
+        throw new IllegalStateException("Can't find enum for question type: " + typeColumnValue);
     }
 
     private QuestionGeneral convertCsvRecordToQuestionGeneral(List<String> columns) {
-        return new QuestionGeneral(columns.get(1));
+        return new QuestionGeneral(
+                columns.get(CSV_COLUMN_INDEX_QUESTION),
+                new Answer(columns.get(CSV_COLUMN_INDEX_ANSWER))
+        );
     }
 
     private QuestionChoice convertCsvRecordToQuestionChoice(List<String> columns) {
-        Assert.state(columns.size() > 1, "Too low column size for type choice: " + columns.size());
+        String answerOptionsColumnValue = columns.get(CSV_COLUMN_INDEX_OPTIONS);
 
-        List<String> options = Arrays.asList(columns.get(2).split(","));
-        return new QuestionChoice(columns.get(1), options);
+        List<Answer> options = Arrays.stream(answerOptionsColumnValue.split(","))
+                .map(Answer::new)
+                .collect(Collectors.toList());
+
+        int correctAnswerIndex = Integer.parseInt(columns.get(CSV_COLUMN_INDEX_ANSWER));
+
+        return new QuestionChoice(
+                columns.get(CSV_COLUMN_INDEX_QUESTION),
+                options.get(correctAnswerIndex),
+                options
+        );
     }
 }

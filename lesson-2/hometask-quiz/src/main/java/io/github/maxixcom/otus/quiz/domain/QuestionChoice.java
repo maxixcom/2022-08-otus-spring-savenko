@@ -3,14 +3,14 @@ package io.github.maxixcom.otus.quiz.domain;
 import java.util.List;
 
 public class QuestionChoice extends Question {
-    private final List<String> options;
+    private final List<Answer> options;
 
-    public QuestionChoice(String content, List<String> options) {
-        super(content);
+    public QuestionChoice(String content, Answer correctAnswer, List<Answer> options) {
+        super(content, correctAnswer);
         this.options = options;
     }
 
-    public List<String> getOptions() {
+    public List<Answer> getOptions() {
         return options;
     }
 }

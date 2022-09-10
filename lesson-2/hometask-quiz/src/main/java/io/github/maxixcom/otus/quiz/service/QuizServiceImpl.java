@@ -1,39 +1,31 @@
 package io.github.maxixcom.otus.quiz.service;
 
 import io.github.maxixcom.otus.quiz.dao.QuestionDao;
-import io.github.maxixcom.otus.quiz.domain.Question;
-import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
-import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
+import io.github.maxixcom.otus.quiz.domain.Quiz;
+import io.github.maxixcom.otus.quiz.domain.Score;
+import io.github.maxixcom.otus.quiz.domain.Student;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
 public class QuizServiceImpl implements QuizService {
     private final QuestionDao questionDao;
-    private final OutputService outputService;
+    private final ScoreCalculator scoreCalculator;
 
-    public QuizServiceImpl(QuestionDao questionDao, OutputService outputService) {
+    public QuizServiceImpl(QuestionDao questionDao, ScoreCalculator scoreCalculator) {
         this.questionDao = questionDao;
-        this.outputService = outputService;
+        this.scoreCalculator = scoreCalculator;
     }
 
     @Override
-    public void printAllQuestions() {
-        List<Question> questions = questionDao.findAll();
+    public Quiz newQuizForStudent(Student student) {
+        return new Quiz(questionDao.findAll(), student);
+    }
 
-        outputService.printHeader();
-
-        if (questions.isEmpty()) {
-            outputService.printNoQuestion();
-            return;
-        }
-
-        int questionIndex = 1;
-        for (Question question : questions) {
-            if (question instanceof QuestionGeneral) {
-                outputService.printQuestionGeneral((QuestionGeneral) question, questionIndex);
-            } else if (question instanceof QuestionChoice) {
-                outputService.printQuestionChoice((QuestionChoice) question, questionIndex);
-            }
-        }
+    @Override
+    public Score completeQuizAndGetScore(Quiz quiz) {
+        return scoreCalculator.calculateScore(
+                quiz.getQuestionsCount(),
+                quiz.getCorrectAnswers()
+        );
     }
 }
