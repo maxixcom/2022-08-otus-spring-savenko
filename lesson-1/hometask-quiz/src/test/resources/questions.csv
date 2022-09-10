@@ -1,0 +1,6 @@
+choice;choice_question;yes,no
+unknown_type:some question;
+;;
+general;general_question;
+;
+choice;long_question;1;2;3;4;
