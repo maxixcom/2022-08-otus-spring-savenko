@@ -6,3 +6,4 @@
 ## Материалы репозитория
 
 [1. Введение в Spring Framework - Домашнее задание](lesson-1/hometask-quiz/)
+[2. Конфигурирование Spring-приложений - Домашнее задание](lesson-2/hometask-quiz/)
