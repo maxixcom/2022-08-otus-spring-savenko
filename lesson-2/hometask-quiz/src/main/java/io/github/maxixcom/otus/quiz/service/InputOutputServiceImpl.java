@@ -1,4 +1,4 @@
-package io.github.maxixcom.otus.quiz.service.console;
+package io.github.maxixcom.otus.quiz.service;
 
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
 
@@ -7,11 +7,11 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-public class ConsoleInputOutputService implements InputOutputService {
+public class InputOutputServiceImpl implements InputOutputService {
     private final PrintStream printStream;
     private final Scanner scanner;
 
-    public ConsoleInputOutputService(PrintStream printStream, InputStream inputStream) {
+    public InputOutputServiceImpl(PrintStream printStream, InputStream inputStream) {
         this.printStream = printStream;
         this.scanner = new Scanner(inputStream);
     }

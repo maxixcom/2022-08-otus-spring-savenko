@@ -1,4 +1,4 @@
-package io.github.maxixcom.otus.quiz.service.console;
+package io.github.maxixcom.otus.quiz.service.processor;
 
 import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ConsoleQuestionChoiceProcessor implements QuestionProcessor {
+public class QuestionChoiceProcessor implements QuestionProcessor {
     private final InputOutputService inputOutputService;
 
-    public ConsoleQuestionChoiceProcessor(InputOutputService inputOutputService) {
+    public QuestionChoiceProcessor(InputOutputService inputOutputService) {
         this.inputOutputService = inputOutputService;
     }
 

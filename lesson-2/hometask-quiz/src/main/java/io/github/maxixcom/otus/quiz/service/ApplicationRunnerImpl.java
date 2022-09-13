@@ -1,4 +1,4 @@
-package io.github.maxixcom.otus.quiz.service.console;
+package io.github.maxixcom.otus.quiz.service;
 
 import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
@@ -7,27 +7,20 @@ import io.github.maxixcom.otus.quiz.domain.Quiz;
 import io.github.maxixcom.otus.quiz.domain.QuizQuestion;
 import io.github.maxixcom.otus.quiz.domain.Score;
 import io.github.maxixcom.otus.quiz.domain.Student;
-import io.github.maxixcom.otus.quiz.service.ApplicationRunner;
-import io.github.maxixcom.otus.quiz.service.InputOutputService;
-import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
-import io.github.maxixcom.otus.quiz.service.QuizService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
-
 @Service
-public class ConsoleRunner implements ApplicationRunner {
+public class ApplicationRunnerImpl implements ApplicationRunner {
     private final QuizService quizService;
     private final QuestionProcessor questionGeneralProcessor;
     private final QuestionProcessor questionChoiceProcessor;
-    private final Scanner scanner = new Scanner(System.in);
     private final InputOutputService inputOutputService;
 
-    public ConsoleRunner(
+    public ApplicationRunnerImpl(
             QuizService quizService,
-            @Qualifier("consoleQuestionGeneralProcessor") QuestionProcessor questionGeneralProcessor,
-            @Qualifier("consoleQuestionChoiceProcessor") QuestionProcessor questionChoiceProcessor,
+            @Qualifier("questionGeneralProcessor") QuestionProcessor questionGeneralProcessor,
+            @Qualifier("questionChoiceProcessor") QuestionProcessor questionChoiceProcessor,
             InputOutputService inputOutputService
     ) {
         this.quizService = quizService;
@@ -45,7 +38,7 @@ public class ConsoleRunner implements ApplicationRunner {
 
         printWelcomeMessage(student, quiz);
 
-        scanner.nextLine();
+        inputOutputService.readLine();
 
         for (QuizQuestion quizQuestion : quiz) {
             inputOutputService.printThinSeparator();
@@ -67,9 +60,9 @@ public class ConsoleRunner implements ApplicationRunner {
     private Student meetTheNewStudent() {
         inputOutputService.printlnString(";) Let's get acquainted!");
         inputOutputService.printString("What is your name? ");
-        String firstName = scanner.nextLine();
+        String firstName = inputOutputService.readLine();
         inputOutputService.printString("What is your family? ");
-        String lastName = scanner.nextLine();
+        String lastName = inputOutputService.readLine();
 
         return new Student(firstName, lastName);
     }
