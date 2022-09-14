@@ -4,16 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
-public class Quiz implements Iterable<QuizQuestion> {
-    private final List<QuizQuestion> questions;
+public class Quiz implements Iterable<Question> {
+    private final List<Question> questions;
     private final Student student;
 
     public Quiz(List<Question> questions, Student student) {
-        this.questions = questions.stream()
-                .map(QuizQuestion::new)
-                .collect(Collectors.toList());
+        this.questions = questions;
         this.student = student;
     }
 
@@ -21,28 +18,22 @@ public class Quiz implements Iterable<QuizQuestion> {
         return questions.size();
     }
 
-    public int getCorrectAnswers() {
-        return (int) questions.stream()
-                .filter(QuizQuestion::isAnsweredCorrectly)
-                .count();
-    }
-
     public Student getStudent() {
         return student;
     }
 
     @Override
-    public Iterator<QuizQuestion> iterator() {
+    public Iterator<Question> iterator() {
         return questions.iterator();
     }
 
     @Override
-    public void forEach(Consumer<? super QuizQuestion> action) {
+    public void forEach(Consumer<? super Question> action) {
         questions.forEach(action);
     }
 
     @Override
-    public Spliterator<QuizQuestion> spliterator() {
+    public Spliterator<Question> spliterator() {
         return questions.spliterator();
     }
 }

@@ -1,32 +1,27 @@
 package io.github.maxixcom.otus.quiz.service;
 
 import io.github.maxixcom.otus.quiz.domain.Question;
-import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
-import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
 import io.github.maxixcom.otus.quiz.domain.Quiz;
-import io.github.maxixcom.otus.quiz.domain.QuizQuestion;
 import io.github.maxixcom.otus.quiz.domain.Score;
 import io.github.maxixcom.otus.quiz.domain.Student;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRunnerImpl implements ApplicationRunner {
     private final QuizService quizService;
-    private final QuestionProcessor questionGeneralProcessor;
-    private final QuestionProcessor questionChoiceProcessor;
     private final InputOutputService inputOutputService;
+    private final QuestionProcessorManager questionProcessorManager;
 
     public ApplicationRunnerImpl(
             QuizService quizService,
-            @Qualifier("questionGeneralProcessor") QuestionProcessor questionGeneralProcessor,
-            @Qualifier("questionChoiceProcessor") QuestionProcessor questionChoiceProcessor,
-            InputOutputService inputOutputService
+            InputOutputService inputOutputService,
+            QuestionProcessorManager questionProcessorManager
     ) {
         this.quizService = quizService;
-        this.questionGeneralProcessor = questionGeneralProcessor;
-        this.questionChoiceProcessor = questionChoiceProcessor;
         this.inputOutputService = inputOutputService;
+
+        this.questionProcessorManager = questionProcessorManager;
+
     }
 
     @Override
@@ -40,19 +35,18 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
 
         inputOutputService.readLine();
 
-        for (QuizQuestion quizQuestion : quiz) {
+        int correctAnswers = 0;
+
+        for (Question question : quiz) {
             inputOutputService.printThinSeparator();
 
-            Question question = quizQuestion.getQuestion();
-
-            if (question instanceof QuestionChoice) {
-                this.questionChoiceProcessor.processQuestion(quizQuestion);
-            } else if (question instanceof QuestionGeneral) {
-                this.questionGeneralProcessor.processQuestion(quizQuestion);
+            final QuestionAnswerResult result = questionProcessorManager.processQuestion(question);
+            if (result.isTheAnswerCorrect()) {
+                correctAnswers++;
             }
         }
 
-        Score score = quizService.completeQuizAndGetScore(quiz);
+        Score score = quizService.completeQuizAndGetScore(quiz, correctAnswers);
 
         printResult(student, score);
     }

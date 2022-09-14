@@ -1,7 +1,9 @@
 package io.github.maxixcom.otus.quiz.service;
 
-import io.github.maxixcom.otus.quiz.domain.QuizQuestion;
+import io.github.maxixcom.otus.quiz.domain.Question;
 
 public interface QuestionProcessor {
-    void processQuestion(QuizQuestion quizQuestion);
+    QuestionAnswerResult processQuestion(Question question);
+
+    Class<?> getSupportedQuestionClass();
 }

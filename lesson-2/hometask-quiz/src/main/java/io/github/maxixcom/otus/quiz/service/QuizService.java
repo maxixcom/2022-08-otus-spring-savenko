@@ -6,5 +6,5 @@ import io.github.maxixcom.otus.quiz.domain.Student;
 
 public interface QuizService {
     Quiz newQuizForStudent(Student student);
-    Score completeQuizAndGetScore(Quiz quiz);
+    Score completeQuizAndGetScore(Quiz quiz, int correctAnswers);
 }

@@ -3,8 +3,8 @@ package io.github.maxixcom.otus.quiz.service.processor;
 import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
-import io.github.maxixcom.otus.quiz.domain.QuizQuestion;
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
+import io.github.maxixcom.otus.quiz.service.QuestionAnswerResult;
 import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
 import org.springframework.stereotype.Component;
 
@@ -19,37 +19,49 @@ public class QuestionChoiceProcessor implements QuestionProcessor {
     }
 
     @Override
-    public void processQuestion(QuizQuestion quizQuestion) {
-        Question question = quizQuestion.getQuestion();
+    public Class<QuestionChoice> getSupportedQuestionClass() {
+        return QuestionChoice.class;
+    }
 
+    @Override
+    public QuestionAnswerResult processQuestion(Question question) {
         inputOutputService.printlnString(question.getContent());
         inputOutputService.printNewLine();
 
         List<Answer> options = ((QuestionChoice) question).getOptions();
-        int firstIndex = 1;
-        int lastIndex = options.size();
-        for (int index = firstIndex; index <= lastIndex; index++) {
+        int firstQuestionIndex = 1;
+        int lastQuestionIndex = options.size();
+
+        listQuestionOptions(options, firstQuestionIndex, lastQuestionIndex);
+
+        inputOutputService.printNewLine();
+
+        Answer answer = getStudentAnswer(options, firstQuestionIndex, lastQuestionIndex);
+
+        return new QuestionAnswerResult(question, answer);
+
+    }
+
+    private void listQuestionOptions(List<Answer> options, int firstQuestionIndex, int lastQuestionIndex) {
+        for (int index = firstQuestionIndex; index <= lastQuestionIndex; index++) {
             inputOutputService.printlnString(
                     String.format("%d. %s", index, options.get(index - 1).getContent())
             );
         }
+    }
 
-        inputOutputService.printNewLine();
-
+    private Answer getStudentAnswer(List<Answer> options, int firstQuestionIndex, int lastQuestionIndex) {
         int answerIndex;
-
         while (true) {
             answerIndex = inputOutputService.readIntWithPrompt(
-                    String.format("Enter number of correct question[%d-%d]: ", firstIndex, lastIndex)
+                    String.format("Enter number of correct question[%d-%d]: ", firstQuestionIndex, lastQuestionIndex)
             );
 
-            if (answerIndex < firstIndex || answerIndex > lastIndex) {
+            if (answerIndex < firstQuestionIndex || answerIndex > lastQuestionIndex) {
                 continue;
             }
 
-            quizQuestion.giveAnswer(options.get(answerIndex - 1));
-
-            break;
+            return options.get(answerIndex - 1);
         }
     }
 }

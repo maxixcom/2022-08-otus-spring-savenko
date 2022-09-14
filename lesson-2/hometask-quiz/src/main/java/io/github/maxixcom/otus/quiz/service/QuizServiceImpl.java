@@ -22,10 +22,10 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Score completeQuizAndGetScore(Quiz quiz) {
+    public Score completeQuizAndGetScore(Quiz quiz, int correctAnswers) {
         return scoreCalculator.calculateScore(
                 quiz.getQuestionsCount(),
-                quiz.getCorrectAnswers()
+                correctAnswers
         );
     }
 }
