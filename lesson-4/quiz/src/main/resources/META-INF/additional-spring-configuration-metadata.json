@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "quiz.file",
+      "type": "java.lang.String",
+      "description": "CSV file with the quiz questions."
+    },
+    {
+      "name": "quiz.correct-answer-ratio",
+      "type": "java.lang.String",
+      "description": "Ratio of correct answers to pass the quiz."
+    }
+  ]
+}
