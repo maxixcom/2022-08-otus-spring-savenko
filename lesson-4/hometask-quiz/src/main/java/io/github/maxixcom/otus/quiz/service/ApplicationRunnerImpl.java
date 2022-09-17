@@ -38,7 +38,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         int correctAnswers = 0;
 
         for (Question question : quiz) {
-            inputOutputService.printThinSeparator();
+            inputOutputService.printlnString("----------------------------------");
 
             final QuestionAnswerResult result = questionProcessorManager.processQuestion(question);
             if (result.isTheAnswerCorrect()) {
@@ -62,7 +62,8 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     }
 
     private void printWelcomeMessage(Student student, Quiz quiz) {
-        inputOutputService.printNewLines(2);
+        inputOutputService.printNewLine();
+        inputOutputService.printNewLine();
         inputOutputService.printlnString(String.format("Nice to meet you %s!", student.getFullName()));
         inputOutputService.printlnString(String.format("You are expected to answer the following %d questions.", quiz.getQuestionsCount()));
         inputOutputService.printlnString("Let's begin and good luck!");
@@ -71,7 +72,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     }
 
     private void printResult(Student student, Score score) {
-        inputOutputService.printThickSeparator();
+        inputOutputService.printlnString("----------------------------------");
         inputOutputService.printlnString(
                 String.format(
                         "%s, you have answered correctly %d of %d questions",

@@ -2,12 +2,14 @@ package io.github.maxixcom.otus.quiz.service;
 
 import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.exceptions.QuestionProcessorNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Service
 public class QuestionProcessorManager {
     private final Map<Class<?>, QuestionProcessor> questionProcessorMap = new HashMap<>();
 

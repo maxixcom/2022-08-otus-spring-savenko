@@ -6,14 +6,8 @@ public interface InputOutputService {
     void printlnString(String string);
 
     default void printNewLine() {
-        printNewLines(1);
+        printlnString(String.format("%n"));
     }
-
-    void printNewLines(int count);
-
-    void printThinSeparator();
-
-    void printThickSeparator();
 
     int readIntWithPrompt(String prompt);
 

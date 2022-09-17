@@ -27,25 +27,6 @@ public class InputOutputServiceImpl implements InputOutputService {
     }
 
     @Override
-    public void printNewLines(int count) {
-        IntStream.range(0, count).forEach(i -> printStream.println());
-    }
-
-    @Override
-    public void printThinSeparator() {
-        printStream.println();
-        printLine('-');
-        printStream.println();
-    }
-
-    @Override
-    public void printThickSeparator() {
-        printStream.println();
-        printLine('=');
-        printStream.println();
-    }
-
-    @Override
     public int readIntWithPrompt(String prompt) {
         while (true) {
             printStream.print(prompt);
