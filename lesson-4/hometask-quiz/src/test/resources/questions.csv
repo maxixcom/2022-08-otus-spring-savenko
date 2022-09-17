@@ -1,0 +1,5 @@
+choice;choice_question;yes,no;0
+unknown_type:some question;;answer
+;;
+general;general_question;;answer
+;
