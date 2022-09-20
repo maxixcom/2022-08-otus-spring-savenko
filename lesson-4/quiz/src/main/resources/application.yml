@@ -1,5 +1,0 @@
-quiz:
-  file: quiz/questions.csv
-  correct-answer-ratio: 0.75
-
-

@@ -6,14 +6,17 @@ import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
 import io.github.maxixcom.otus.quiz.service.QuestionAnswerResult;
 import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
+import io.github.maxixcom.otus.quiz.service.QuizTranslationService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionGeneralProcessor implements QuestionProcessor {
     private final InputOutputService inputOutputService;
+    private final QuizTranslationService translationService;
 
-    public QuestionGeneralProcessor(InputOutputService inputOutputService) {
+    public QuestionGeneralProcessor(InputOutputService inputOutputService, QuizTranslationService translationService) {
         this.inputOutputService = inputOutputService;
+        this.translationService = translationService;
     }
 
     @Override
@@ -24,10 +27,10 @@ public class QuestionGeneralProcessor implements QuestionProcessor {
     @Override
     public QuestionAnswerResult processQuestion(Question question) {
 
-        inputOutputService.printlnString(question.getContent());
+        inputOutputService.printlnString(translationService.translate(question.getContent()));
         inputOutputService.printNewLine();
 
-        inputOutputService.printString("Type your answer: ");
+        inputOutputService.printString(translationService.translate("processor_general_line_1"));
 
         Answer answer = getStudentAnswer();
 

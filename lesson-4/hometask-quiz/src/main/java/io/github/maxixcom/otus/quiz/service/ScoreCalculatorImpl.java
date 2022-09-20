@@ -1,15 +1,15 @@
 package io.github.maxixcom.otus.quiz.service;
 
+import io.github.maxixcom.otus.quiz.config.QuizConfigProperties;
 import io.github.maxixcom.otus.quiz.domain.Score;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ScoreCalculatorImpl implements ScoreCalculator {
     private final float correctAnswersRatio;
 
-    public ScoreCalculatorImpl(@Value("${quiz.correct-answers-ratio}") float correctAnswersRatio) {
-        this.correctAnswersRatio = correctAnswersRatio;
+    public ScoreCalculatorImpl(QuizConfigProperties quizConfigProperties) {
+        this.correctAnswersRatio = quizConfigProperties.getCorrectAnswerRatio();
     }
 
     @Override

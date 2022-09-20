@@ -6,6 +6,7 @@ import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
 import io.github.maxixcom.otus.quiz.service.QuestionAnswerResult;
 import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
+import io.github.maxixcom.otus.quiz.service.QuizTranslationService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 @Component
 public class QuestionChoiceProcessor implements QuestionProcessor {
     private final InputOutputService inputOutputService;
+    private final QuizTranslationService translationService;
 
-    public QuestionChoiceProcessor(InputOutputService inputOutputService) {
+    public QuestionChoiceProcessor(InputOutputService inputOutputService, QuizTranslationService translationService) {
         this.inputOutputService = inputOutputService;
+        this.translationService = translationService;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class QuestionChoiceProcessor implements QuestionProcessor {
 
     @Override
     public QuestionAnswerResult processQuestion(Question question) {
-        inputOutputService.printlnString(question.getContent());
+        inputOutputService.printlnString(translationService.translate(question.getContent()));
         inputOutputService.printNewLine();
 
         List<Answer> options = ((QuestionChoice) question).getOptions();
@@ -44,8 +47,9 @@ public class QuestionChoiceProcessor implements QuestionProcessor {
 
     private void listQuestionOptions(List<Answer> options, int firstQuestionIndex, int lastQuestionIndex) {
         for (int index = firstQuestionIndex; index <= lastQuestionIndex; index++) {
+            String content = translationService.translate(options.get(index - 1).getContent());
             inputOutputService.printlnString(
-                    String.format("%d. %s", index, options.get(index - 1).getContent())
+                    String.format("%d. %s", index, content)
             );
         }
     }
@@ -54,7 +58,8 @@ public class QuestionChoiceProcessor implements QuestionProcessor {
         int answerIndex;
         while (true) {
             answerIndex = inputOutputService.readIntWithPrompt(
-                    String.format("Enter number of correct question[%d-%d]: ", firstQuestionIndex, lastQuestionIndex)
+                    translationService.translate("processor_choice_line_1",firstQuestionIndex, lastQuestionIndex)
+//                    String.format("Enter number of correct question[%d-%d]: ", firstQuestionIndex, lastQuestionIndex)
             );
 
             if (answerIndex < firstQuestionIndex || answerIndex > lastQuestionIndex) {

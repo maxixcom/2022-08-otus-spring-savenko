@@ -1,5 +1,5 @@
-choice;What of the following is the default value of an instance variable?;null,0,Depends upon the type of variable,Not assigned;2
-choice;What is the size of char variable?;8 bit,16 bit,32 bit,64 bit;1
-choice;A class always has a default constructor;yes,no;1
-choice;Deletion is faster in LinkedList than ArrayList;yes,no;0
-general;What is the base class of all java classes;;Object
+choice;question_1_content;null,0,question_1_option_2,question_1_option_3;2
+choice;question_2_content;8 bit,16 bit,32 bit,64 bit;1
+choice;question_3_content;question_option_yes,question_option_no;1
+choice;question_4_content;question_option_yes,question_option_no;0
+general;question_5_content;;Object

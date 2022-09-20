@@ -1,4 +1,4 @@
-# Домашнее задание к занятию #2 - Конфигурирование Spring-приложений
+# Домашнее задание к занятию #4 - Конфигурирование Spring-приложений
 
 ## Задача
 
@@ -31,7 +31,7 @@
 ## Имплементация
 
 Вопросы Quiz необходимо разместить в файле в папке с ресурсами `src/main/resources` и указать путь к нему в файле 
-настроек `application.properties`. Например:
+настроек `application.yml`. Например:
 
 ```properties
 quiz.questions.file=quiz/questions.csv
@@ -41,7 +41,14 @@ quiz.questions.file=quiz/questions.csv
 был признан успешным:
 
 ```properties
-quiz.correct-answers-ratio=0.75
+quiz.questions.correct-answers-ratio=0.75
+```
+
+Если ваш Quiz интернационализирован, то вы можете добавить файл перевода вопросов в `resourses/i18n` и установить
+нужную локаль в файле `application.properties`:
+
+```properties
+quiz.questions.locale=ru_RU
 ```
 
 

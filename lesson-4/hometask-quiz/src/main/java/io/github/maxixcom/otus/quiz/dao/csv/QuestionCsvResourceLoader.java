@@ -1,5 +1,6 @@
 package io.github.maxixcom.otus.quiz.dao.csv;
 
+import io.github.maxixcom.otus.quiz.config.QuizConfigProperties;
 import io.github.maxixcom.otus.quiz.dao.QuestionLoader;
 import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
@@ -28,8 +29,8 @@ public class QuestionCsvResourceLoader implements QuestionLoader {
 
     private final String questionFile;
 
-    public QuestionCsvResourceLoader(@Value("${quiz.questions.file}") String questionFile) {
-        this.questionFile = questionFile;
+    public QuestionCsvResourceLoader(QuizConfigProperties quizConfigProperties) {
+        this.questionFile = quizConfigProperties.getFile();
     }
 
     @Override

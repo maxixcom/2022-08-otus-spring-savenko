@@ -1,0 +1,11 @@
+spring:
+  messages:
+    basename: "i18n/quiz-messages"
+    encoding: "UTF-8"
+
+quiz:
+  file: quiz/questions.csv
+  correct-answer-ratio: 0.75
+  locale: ru_RU
+
+

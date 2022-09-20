@@ -9,6 +9,11 @@
       "name": "quiz.correct-answer-ratio",
       "type": "java.lang.String",
       "description": "Ratio of correct answers to pass the quiz."
+    },
+    {
+      "name": "quiz.locale",
+      "type": "java.lang.String",
+      "description": "Set the quiz locale."
     }
   ]
 }
