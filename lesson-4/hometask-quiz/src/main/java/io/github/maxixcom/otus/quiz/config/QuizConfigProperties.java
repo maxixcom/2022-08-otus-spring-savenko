@@ -8,18 +8,18 @@ import java.util.Locale;
 @ConfigurationProperties(prefix = "quiz")
 @ConstructorBinding
 public class QuizConfigProperties {
-    private final String file;
+    private final String path;
     private final Float correctAnswerRatio;
     private final Locale locale;
 
-    public QuizConfigProperties(String file, Float correctAnswerRatio, Locale locale) {
-        this.file = file;
+    public QuizConfigProperties(String path, Float correctAnswerRatio, Locale locale) {
+        this.path = path;
         this.correctAnswerRatio = correctAnswerRatio;
         this.locale = locale;
     }
 
-    public String getFile() {
-        return file;
+    public String getPath() {
+        return path;
     }
 
     public Float getCorrectAnswerRatio() {

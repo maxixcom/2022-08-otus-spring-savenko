@@ -1,15 +1,13 @@
 package io.github.maxixcom.otus.quiz.dao.csv;
 
-import io.github.maxixcom.otus.quiz.config.QuizConfigProperties;
 import io.github.maxixcom.otus.quiz.dao.QuestionLoader;
 import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
 import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
+import io.github.maxixcom.otus.quiz.exceptions.QuestionFileNotFoundException;
 import io.github.maxixcom.otus.quiz.exceptions.UnknownQuestionTypeException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+import io.github.maxixcom.otus.quiz.service.logging.DaoLoggable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,9 +15,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Component
 public class QuestionCsvResourceLoader implements QuestionLoader {
     private final static int CSV_RECORD_COLUMNS_COUNT = 4;
     private final static int CSV_COLUMN_INDEX_TYPE = 0;
@@ -29,17 +27,26 @@ public class QuestionCsvResourceLoader implements QuestionLoader {
 
     private final String questionFile;
 
-    public QuestionCsvResourceLoader(QuizConfigProperties quizConfigProperties) {
-        this.questionFile = quizConfigProperties.getFile();
+    public QuestionCsvResourceLoader(
+            String questionPath,
+            Locale locale
+    ) {
+        this.questionFile = String.format(
+                "%s/questions_%s.csv",
+                questionPath,
+                locale.getLanguage()
+        );
     }
 
+    @DaoLoggable
     @Override
     public List<Question> load() {
         InputStream inputStream = getClass()
-                .getClassLoader()
                 .getResourceAsStream(this.questionFile);
 
-        Assert.notNull(inputStream, "Resource " + this.questionFile + " not found");
+        if (inputStream == null) {
+            throw new QuestionFileNotFoundException("Resource " + this.questionFile + " not found");
+        }
 
         try (inputStream) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {

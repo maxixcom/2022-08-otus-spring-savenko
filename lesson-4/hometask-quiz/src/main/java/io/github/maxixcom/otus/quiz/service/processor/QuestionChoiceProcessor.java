@@ -6,7 +6,7 @@ import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
 import io.github.maxixcom.otus.quiz.service.QuestionAnswerResult;
 import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
-import io.github.maxixcom.otus.quiz.service.QuizTranslationService;
+import io.github.maxixcom.otus.quiz.service.TranslationService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 @Component
 public class QuestionChoiceProcessor implements QuestionProcessor {
     private final InputOutputService inputOutputService;
-    private final QuizTranslationService translationService;
+    private final TranslationService translationService;
 
-    public QuestionChoiceProcessor(InputOutputService inputOutputService, QuizTranslationService translationService) {
+    public QuestionChoiceProcessor(InputOutputService inputOutputService, TranslationService translationService) {
         this.inputOutputService = inputOutputService;
         this.translationService = translationService;
     }

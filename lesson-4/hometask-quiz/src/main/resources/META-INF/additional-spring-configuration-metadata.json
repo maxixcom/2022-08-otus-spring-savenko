@@ -1,9 +1,9 @@
 {
   "properties": [
     {
-      "name": "quiz.file",
+      "name": "quiz.path",
       "type": "java.lang.String",
-      "description": "CSV file with the quiz questions."
+      "description": "Path where stored localized CSV files with the quiz questions."
     },
     {
       "name": "quiz.correct-answer-ratio",

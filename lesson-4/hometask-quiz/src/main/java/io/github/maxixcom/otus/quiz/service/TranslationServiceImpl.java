@@ -1,20 +1,17 @@
 package io.github.maxixcom.otus.quiz.service;
 
-import io.github.maxixcom.otus.quiz.config.QuizConfigProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
-@Service
-public class QuizTranslationServiceImpl implements QuizTranslationService {
+public class TranslationServiceImpl implements TranslationService {
     private final MessageSource messageSource;
     private final Locale locale;
 
-    public QuizTranslationServiceImpl(MessageSource messageSource, QuizConfigProperties quizConfigProperties) {
+    public TranslationServiceImpl(MessageSource messageSource, Locale locale) {
         this.messageSource = messageSource;
-        this.locale = quizConfigProperties.getLocale();
+        this.locale = locale;
     }
 
     @Override

@@ -14,11 +14,9 @@ import java.util.List;
 public class DaoLoggerService {
     private static final Logger logger = LoggerFactory.getLogger(DaoLoggerService.class);
 
-    @AfterReturning(pointcut = "execution(* io.github.maxixcom.otus.quiz.dao.QuestionLoader.load())", returning = "list")
+    @AfterReturning(pointcut = "@annotation(io.github.maxixcom.otus.quiz.service.logging.DaoLoggable)", returning = "list")
     List<Question> logLoaderLoad(List<Question> list) {
         logger.info("Loaded {} questions", list.size());
         return list;
     }
-
-
 }

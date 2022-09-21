@@ -6,15 +6,15 @@ import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
 import io.github.maxixcom.otus.quiz.service.InputOutputService;
 import io.github.maxixcom.otus.quiz.service.QuestionAnswerResult;
 import io.github.maxixcom.otus.quiz.service.QuestionProcessor;
-import io.github.maxixcom.otus.quiz.service.QuizTranslationService;
+import io.github.maxixcom.otus.quiz.service.TranslationService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionGeneralProcessor implements QuestionProcessor {
     private final InputOutputService inputOutputService;
-    private final QuizTranslationService translationService;
+    private final TranslationService translationService;
 
-    public QuestionGeneralProcessor(InputOutputService inputOutputService, QuizTranslationService translationService) {
+    public QuestionGeneralProcessor(InputOutputService inputOutputService, TranslationService translationService) {
         this.inputOutputService = inputOutputService;
         this.translationService = translationService;
     }
