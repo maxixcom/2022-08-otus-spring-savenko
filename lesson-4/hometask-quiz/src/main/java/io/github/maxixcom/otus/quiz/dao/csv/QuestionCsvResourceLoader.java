@@ -1,5 +1,6 @@
 package io.github.maxixcom.otus.quiz.dao.csv;
 
+import io.github.maxixcom.otus.quiz.config.provider.QuestionFileProvider;
 import io.github.maxixcom.otus.quiz.dao.QuestionLoader;
 import io.github.maxixcom.otus.quiz.domain.Answer;
 import io.github.maxixcom.otus.quiz.domain.Question;
@@ -8,6 +9,7 @@ import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
 import io.github.maxixcom.otus.quiz.exceptions.QuestionFileNotFoundException;
 import io.github.maxixcom.otus.quiz.exceptions.UnknownQuestionTypeException;
 import io.github.maxixcom.otus.quiz.service.logging.DaoLoggable;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +17,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
+@Component
 public class QuestionCsvResourceLoader implements QuestionLoader {
     private final static int CSV_RECORD_COLUMNS_COUNT = 4;
     private final static int CSV_COLUMN_INDEX_TYPE = 0;
@@ -28,14 +30,16 @@ public class QuestionCsvResourceLoader implements QuestionLoader {
     private final String questionFile;
 
     public QuestionCsvResourceLoader(
-            String questionPath,
-            Locale locale
+            QuestionFileProvider questionFileProvider
+//            String questionPath,
+//            Locale locale
     ) {
-        this.questionFile = String.format(
-                "%s/questions_%s.csv",
-                questionPath,
-                locale.getLanguage()
-        );
+        this.questionFile = questionFileProvider.getFilePath();
+//        this.questionFile = String.format(
+//                "%s/questions_%s.csv",
+//                questionPath,
+//                locale.getLanguage()
+//        );
     }
 
     @DaoLoggable

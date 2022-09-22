@@ -1,5 +1,8 @@
 package io.github.maxixcom.otus.quiz.config;
 
+import io.github.maxixcom.otus.quiz.config.provider.LocaleProvider;
+import io.github.maxixcom.otus.quiz.config.provider.QuestionFileProvider;
+import io.github.maxixcom.otus.quiz.config.provider.RatioProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
@@ -7,7 +10,7 @@ import java.util.Locale;
 
 @ConfigurationProperties(prefix = "quiz")
 @ConstructorBinding
-public class QuizConfigProperties {
+public class QuizConfigProperties implements QuestionFileProvider, LocaleProvider, RatioProvider {
     private final String path;
     private final Float correctAnswerRatio;
     private final Locale locale;
@@ -18,15 +21,22 @@ public class QuizConfigProperties {
         this.locale = locale;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public Float getCorrectAnswerRatio() {
+    @Override
+    public Float getRatio() {
         return correctAnswerRatio;
     }
 
+    @Override
     public Locale getLocale() {
         return locale;
+    }
+
+    @Override
+    public String getFilePath() {
+        return String.format(
+                "%s/questions_%s.csv",
+                path,
+                locale.getLanguage()
+        );
     }
 }
