@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "quiz.path",
+      "type": "java.lang.String",
+      "description": "Path where stored localized CSV files with the quiz questions."
+    },
+    {
+      "name": "quiz.correct-answer-ratio",
+      "type": "java.lang.String",
+      "description": "Ratio of correct answers to pass the quiz."
+    },
+    {
+      "name": "quiz.locale",
+      "type": "java.lang.String",
+      "description": "Set the quiz locale."
+    }
+  ]
+}
