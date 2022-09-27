@@ -1,14 +1,18 @@
 package io.github.maxixcom.otus.quiz.dao.csv;
 
-import io.github.maxixcom.otus.quiz.dao.QuestionLoader;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class QuestionCsvResourceLoaderTest {
+    @Autowired
+    private QuestionCsvResourceLoader questionCsvResourceLoader;
+
     @Test
     void shouldLoadOnlyCorrectLines() {
-        QuestionLoader questionLoader = new QuestionCsvResourceLoader(() -> "/questions_en.csv");
-        var questions = questionLoader.load();
+        var questions = questionCsvResourceLoader.load();
 
         Assertions.assertThat(questions).size().isEqualTo(2);
     }

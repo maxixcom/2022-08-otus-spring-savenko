@@ -5,20 +5,33 @@ import io.github.maxixcom.otus.quiz.domain.Question;
 import io.github.maxixcom.otus.quiz.domain.QuestionChoice;
 import io.github.maxixcom.otus.quiz.domain.QuestionGeneral;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class QuestionDaoImplTest {
 
-    @Mock
+    @Configuration
+    static class TestConfiguration {
+        @Bean
+        QuestionDao questionDao(QuestionLoader questionLoader) {
+            return new QuestionDaoImpl(questionLoader);
+        }
+    }
+
+    @MockBean
     private QuestionLoader questionLoader;
+
+    @Autowired
+    private QuestionDao questionDao;
 
     @Test
     void findAll() {
@@ -40,7 +53,7 @@ class QuestionDaoImplTest {
         Mockito.when(questionLoader.load())
                 .thenReturn(questions);
 
-        QuestionDaoImpl questionDao = new QuestionDaoImpl(questionLoader);
+//        QuestionDaoImpl questionDao = new QuestionDaoImpl(questionLoader);
 
         var allQuestions = questionDao.findAll();
 
