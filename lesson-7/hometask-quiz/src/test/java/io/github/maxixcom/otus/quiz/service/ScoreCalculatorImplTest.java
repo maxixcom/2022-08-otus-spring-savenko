@@ -14,6 +14,7 @@ class ScoreCalculatorImplTest {
         assertThat(score.isPassed()).isTrue();
     }
 
+    @Test
     void shouldFailed() {
         ScoreCalculator scoreCalculator = new ScoreCalculatorImpl(() -> 0.75F);
         Score score = scoreCalculator.calculateScore(5, 10);

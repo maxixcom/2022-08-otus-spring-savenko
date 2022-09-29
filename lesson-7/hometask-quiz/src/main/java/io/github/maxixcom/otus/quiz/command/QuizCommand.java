@@ -12,7 +12,7 @@ public class QuizCommand {
     private final QuizRunner quizRunner;
     private final InputOutputService inputOutputService;
 
-    private Boolean isRegistered = false;
+    private boolean isRegistered = false;
 
     public QuizCommand(QuizRunner quizRunner, InputOutputService inputOutputService) {
         this.quizRunner = quizRunner;
