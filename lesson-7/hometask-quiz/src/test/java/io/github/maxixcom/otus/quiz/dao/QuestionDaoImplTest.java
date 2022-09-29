@@ -9,23 +9,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = QuestionDaoImpl.class)
 class QuestionDaoImplTest {
-
-    @Configuration
-    static class TestConfiguration {
-        @Bean
-        QuestionDao questionDao(QuestionLoader questionLoader) {
-            return new QuestionDaoImpl(questionLoader);
-        }
-    }
 
     @MockBean
     private QuestionLoader questionLoader;
