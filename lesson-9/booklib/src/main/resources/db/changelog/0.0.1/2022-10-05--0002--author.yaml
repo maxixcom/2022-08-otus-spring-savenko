@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_author_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-10-05--0002--author
+      author: maxix
+      createTable:
+        tableName: author
+        columns:
+          - column:
+              name: id
+              type: bigint
+              defaultValueSequenceNext: seq_author_id
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_author
+          - column:
+              name: name
+              type: varchar(50)
+
+  - changeSet:
+      id: 2022-10-05--0002--author-ux-author-name
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            unique: true
+            indexName: ux_author_name
+            tableName: author
