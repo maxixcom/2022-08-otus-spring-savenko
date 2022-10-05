@@ -10,3 +10,4 @@
 3. ["Чёрная магия" Spring Boot](lesson-4/hometask-quiz/)
 4. [AOP, Spring AOP](lesson-4/hometask-quiz/)
 5. [Продвинутая конфигурация (Spring Shell)](lesson-7/hometask-quiz/)
+6. [DAO на Spring JDBC ](lession-9/booklib)
