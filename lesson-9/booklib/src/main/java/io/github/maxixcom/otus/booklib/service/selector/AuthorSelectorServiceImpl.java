@@ -2,7 +2,6 @@ package io.github.maxixcom.otus.booklib.service.selector;
 
 import io.github.maxixcom.otus.booklib.dao.AuthorDao;
 import io.github.maxixcom.otus.booklib.domain.Author;
-import io.github.maxixcom.otus.booklib.domain.Genre;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

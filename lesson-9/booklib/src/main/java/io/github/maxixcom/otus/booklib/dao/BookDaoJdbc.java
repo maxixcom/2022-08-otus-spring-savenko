@@ -24,37 +24,6 @@ import java.util.Set;
 public class BookDaoJdbc implements BookDao {
     private final NamedParameterJdbcOperations jdbc;
 
-    static class BookRowMapper implements RowMapper<Book> {
-        @Override
-        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Book.BookBuilder bookBuilder = Book.builder()
-                    .id(rs.getLong("id"))
-                    .title(rs.getString("title"));
-
-            long genreId = rs.getLong("genre_id");
-            if (!rs.wasNull()) {
-                Genre genre = Genre.builder()
-                        .id(genreId)
-                        .title(rs.getString("genre_title"))
-                        .build();
-
-                bookBuilder.genre(genre);
-            }
-
-            long authorId = rs.getLong("author_id");
-            if (!rs.wasNull()) {
-                Author author = Author.builder()
-                        .id(authorId)
-                        .name(rs.getString("author_name"))
-                        .build();
-
-                bookBuilder.author(author);
-            }
-
-            return bookBuilder.build();
-        }
-    }
-
     @Override
     public Optional<Book> findById(long id) {
         String sql = "SELECT " +
@@ -162,5 +131,36 @@ public class BookDaoJdbc implements BookDao {
         jdbc.update(sql, parameterSource, keyHolder);
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    static class BookRowMapper implements RowMapper<Book> {
+        @Override
+        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Book.BookBuilder bookBuilder = Book.builder()
+                    .id(rs.getLong("id"))
+                    .title(rs.getString("title"));
+
+            long genreId = rs.getLong("genre_id");
+            if (!rs.wasNull()) {
+                Genre genre = Genre.builder()
+                        .id(genreId)
+                        .title(rs.getString("genre_title"))
+                        .build();
+
+                bookBuilder.genre(genre);
+            }
+
+            long authorId = rs.getLong("author_id");
+            if (!rs.wasNull()) {
+                Author author = Author.builder()
+                        .id(authorId)
+                        .name(rs.getString("author_name"))
+                        .build();
+
+                bookBuilder.author(author);
+            }
+
+            return bookBuilder.build();
+        }
     }
 }
