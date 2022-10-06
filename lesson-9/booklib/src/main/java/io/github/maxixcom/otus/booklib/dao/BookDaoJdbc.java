@@ -4,6 +4,7 @@ import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.domain.Genre;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -64,13 +65,18 @@ public class BookDaoJdbc implements BookDao {
                 "LEFT JOIN author as a ON a.id=b.author_id " +
                 "LEFT JOIN genre as g ON g.id=genre_id " +
                 "WHERE " +
-                "id=:id";
+                "b.id=:id";
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        Book book = jdbc.queryForObject(sql, parameterSource, new BookRowMapper());
-        return Optional.ofNullable(book);
+        try {
+            Book book = jdbc.queryForObject(sql, parameterSource, new BookRowMapper());
+            return Optional.ofNullable(book);
+        } catch (EmptyResultDataAccessException e) {
+            // Just return empty optional
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -91,7 +97,6 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public void deleteByIds(Set<Long> ids) {
-//        String sql = "DELETE FROM book WHERE id=:id";
         String sql = "DELETE FROM book WHERE id in (:ids)";
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource()
