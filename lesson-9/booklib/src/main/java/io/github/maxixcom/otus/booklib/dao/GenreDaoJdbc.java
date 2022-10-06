@@ -35,8 +35,8 @@ public class GenreDaoJdbc implements GenreDao {
     public Optional<Genre> findById(long id) {
         String sql = "SELECT id, title FROM genre WHERE id=:id";
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", id);
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", id);
 
         Genre genre = jdbc.queryForObject(sql, parameterSource, new GenreRowMapper());
         return Optional.ofNullable(genre);
@@ -53,8 +53,8 @@ public class GenreDaoJdbc implements GenreDao {
     public long insert(Genre genre) {
         String sql = "INSERT INTO genre(title) VALUES(:title)";
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("title", genre.getTitle());
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("title", genre.getTitle());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
