@@ -8,11 +8,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -130,5 +133,34 @@ public class BookDaoJdbc implements BookDao {
                 );
 
         jdbc.update(sql, parameterSource);
+    }
+
+    @Override
+    public long insert(Book book) {
+        String sql = "INSERT INTO book " +
+                "(title, author_id, genre_id) " +
+                "VALUES " +
+                "(:title,:authorId,:genreId)";
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("title", book.getTitle())
+
+                .addValue("authorId",
+                        Optional.ofNullable(book.getAuthor())
+                                .map(Author::getId)
+                                .orElse(null)
+                )
+
+                .addValue("genreId",
+                        Optional.ofNullable(book.getGenre())
+                                .map(Genre::getId)
+                                .orElse(null)
+                );
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbc.update(sql, parameterSource, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 }

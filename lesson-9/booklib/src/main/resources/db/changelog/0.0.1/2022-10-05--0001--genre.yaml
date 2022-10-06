@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: seq
+      id: 2022-10-05--0001--genre-seq
       author: maxix
       changes:
         - createSequence:
@@ -9,7 +9,7 @@ databaseChangeLog:
             startValue: 100
 
   - changeSet:
-      id: 2022-10-05--0001--genre
+      id: 2022-10-05--0001--genre-table
       author: maxix
       createTable:
         tableName: genre

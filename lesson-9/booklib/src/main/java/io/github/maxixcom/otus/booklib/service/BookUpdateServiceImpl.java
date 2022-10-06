@@ -24,12 +24,12 @@ public class BookUpdateServiceImpl implements BookUpdateService {
     public void updateBook(long bookId) {
         bookDao.findById(bookId)
                 .ifPresentOrElse(
-                        this::runUpdateBookScenario,
+                        this::updateBookInteractive,
                         () -> ioService.out("Book #%d not found%n", bookId)
                 );
     }
 
-    private void runUpdateBookScenario(Book book) {
+    private void updateBookInteractive(Book book) {
         Book.BookBuilder bookBuilder = book.toBuilder();
         String newTitle = ioService.readLineWithPrompt(
                 "Title (%s - enter to leave current): ",

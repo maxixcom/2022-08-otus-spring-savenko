@@ -14,4 +14,6 @@ public interface BookDao {
     void deleteByIds(Set<Long> ids);
 
     void update(Book book);
+
+    long insert(Book book);
 }

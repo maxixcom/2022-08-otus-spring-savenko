@@ -1,6 +1,15 @@
 databaseChangeLog:
   - changeSet:
-      id: 2022-10-05--0003--book
+      id: 2022-10-05--0003--book-seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_book_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-10-05--0003--book-table
       author: maxix
       createTable:
         tableName: book
@@ -8,7 +17,7 @@ databaseChangeLog:
           - column:
               name: id
               type: bigint
-              autoIncrement: true
+              defaultValueSequenceNext: seq_book_id
               constraints:
                 nullable: false
                 primaryKey: true
