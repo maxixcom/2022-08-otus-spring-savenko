@@ -32,34 +32,9 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public Optional<Genre> findById(long id) {
-        String sql = "SELECT id, title FROM genre WHERE id=:id";
-
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", id);
-
-        Genre genre = jdbc.queryForObject(sql, parameterSource, new GenreRowMapper());
-        return Optional.ofNullable(genre);
-    }
-
-    @Override
     public List<Genre> findAll() {
         String sql = "SELECT id, title FROM genre ORDER BY id";
 
         return jdbc.query(sql, new GenreRowMapper());
-    }
-
-    @Override
-    public long insert(Genre genre) {
-        String sql = "INSERT INTO genre(title) VALUES(:title)";
-
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("title", genre.getTitle());
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbc.update(sql, parameterSource, keyHolder);
-
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 }

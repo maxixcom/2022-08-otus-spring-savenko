@@ -32,34 +32,9 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Optional<Author> findById(long id) {
-        String sql = "SELECT id, name FROM author WHERE id=:id";
-
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("id", id);
-
-        Author author = jdbc.queryForObject(sql, parameterSource, new AuthorRowMapper());
-        return Optional.ofNullable(author);
-    }
-
-    @Override
     public List<Author> findAll() {
         String sql = "SELECT id, name FROM author ORDER BY id";
 
         return jdbc.query(sql, new AuthorRowMapper());
-    }
-
-    @Override
-    public long insert(Author author) {
-        String sql = "INSERT INTO author(name) VALUES(:name)";
-
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("name", author.getName());
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbc.update(sql, parameterSource, keyHolder);
-
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 }

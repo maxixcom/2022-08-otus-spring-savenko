@@ -2,12 +2,14 @@ package io.github.maxixcom.otus.booklib.command;
 
 import io.github.maxixcom.otus.booklib.service.BookDeleteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import java.util.Set;
 
 @RequiredArgsConstructor
+@ShellCommandGroup("Manage books")
 @ShellComponent
 public class BookDeleteCommand {
     private final BookDeleteService bookDeleteService;

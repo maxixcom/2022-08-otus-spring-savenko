@@ -86,4 +86,26 @@ class BookDaoTest {
                     Assertions.assertThat(b.getGenre().getId()).isEqualTo(2);
                 });
     }
+
+    @Test
+    void shouldUpdateBook() {
+        Optional<Book> bookOptional = bookDaoJdbc.findById(1);
+
+        bookOptional.ifPresent(book ->
+                bookDaoJdbc.update(
+                        book.toBuilder()
+                                .title("Book Title")
+                                .build()
+                )
+        );
+
+        bookOptional = bookDaoJdbc.findById(1);
+
+        Assertions.assertThat(bookOptional)
+                .isPresent()
+                .containsInstanceOf(Book.class)
+                .hasValueSatisfying(b -> {
+                    Assertions.assertThat(b.getTitle()).isEqualTo("Book Title");
+                });
+    }
 }
