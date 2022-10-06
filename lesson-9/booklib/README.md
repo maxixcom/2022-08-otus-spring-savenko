@@ -63,7 +63,7 @@ java -jar ./build/libs/booklib-0.0.1-SNAPSHOT.jar
 или
 
 ```shell
-./gradlew distЯшз
+./gradlew distZip
 ```
 
 ## Доступные операции
