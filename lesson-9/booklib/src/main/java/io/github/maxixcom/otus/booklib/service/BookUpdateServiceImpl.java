@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 @Service
@@ -31,23 +32,30 @@ public class BookUpdateServiceImpl implements BookUpdateService {
 
     private void updateBookInteractive(Book book) {
         Book.BookBuilder bookBuilder = book.toBuilder();
-        String newTitle = ioService.readLineWithPrompt(
-                "Title (%s - enter to leave current): ",
-                book.getTitle()
-        );
-        if (!newTitle.isBlank()) {
-            bookBuilder.title(newTitle);
-        }
 
-        selectBookAuthor(book, bookBuilder);
-        selectBookGenre(book, bookBuilder);
+        updateBookTitle(book, newTitle -> {
+            if (!newTitle.isBlank()) {
+                bookBuilder.title(newTitle);
+            }
+        });
+
+        selectBookAuthor(book, bookBuilder::author);
+        selectBookGenre(book, bookBuilder::genre);
 
         bookDao.update(bookBuilder.build());
 
         ioService.out("%nBook #%d updated%n", book.getId());
     }
 
-    private void selectBookAuthor(Book book, Book.BookBuilder bookBuilder) {
+    private void updateBookTitle(Book book, Consumer<String> updateFunction) {
+        String newTitle = ioService.readLineWithPrompt(
+                "Title (%s - enter to leave current): ",
+                book.getTitle()
+        );
+        updateFunction.accept(newTitle);
+    }
+
+    private void selectBookAuthor(Book book, Consumer<Author> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Author (%s - enter to leave current, r - reset, l - for select): ",
@@ -58,20 +66,22 @@ public class BookUpdateServiceImpl implements BookUpdateService {
 
             if (selectCommand.equals("l")) {
                 authorSelectorService.selectAuthor()
-                        .ifPresent(bookBuilder::author);
+                        .ifPresent(updateFunction);
                 break;
             }
+
             if (selectCommand.equals("r")) {
-                bookBuilder.author(null);
+                updateFunction.accept(null);
                 break;
             }
+
             if (selectCommand.isBlank()) {
                 break;
             }
         }
     }
 
-    private void selectBookGenre(Book book, Book.BookBuilder bookBuilder) {
+    private void selectBookGenre(Book book, Consumer<Genre> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Genre (%s - enter to leave current, r - reset, l - for select): ",
@@ -82,13 +92,15 @@ public class BookUpdateServiceImpl implements BookUpdateService {
 
             if (selectCommand.equals("l")) {
                 genreSelectorService.selectGenre()
-                        .ifPresent(bookBuilder::genre);
+                        .ifPresent(updateFunction);
                 break;
             }
+
             if (selectCommand.equals("r")) {
-                bookBuilder.genre(null);
+                updateFunction.accept(null);
                 break;
             }
+
             if (selectCommand.isBlank()) {
                 break;
             }
