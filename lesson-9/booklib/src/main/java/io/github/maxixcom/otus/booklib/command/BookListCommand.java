@@ -7,10 +7,10 @@ import org.springframework.shell.standard.ShellMethod;
 
 @RequiredArgsConstructor
 @ShellComponent
-public class ListBooksCommand {
+public class BookListCommand {
     private final BookListingService bookListingService;
 
-    @ShellMethod(value = "List all books", key = {"l", "list", "list-books"})
+    @ShellMethod(value = "List all books", key = {"l", "p", "list", "list-books"})
     public void listBooks() {
         bookListingService.outListOfAllBooks();
     }

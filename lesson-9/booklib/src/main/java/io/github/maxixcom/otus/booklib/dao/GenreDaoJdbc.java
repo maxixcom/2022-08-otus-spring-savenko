@@ -44,7 +44,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public List<Genre> findAll() {
-        String sql = "SELECT id, title FROM genre";
+        String sql = "SELECT id, title FROM genre ORDER BY id";
 
         return jdbc.query(sql, new GenreRowMapper());
     }

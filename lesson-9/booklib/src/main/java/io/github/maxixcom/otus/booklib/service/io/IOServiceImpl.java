@@ -28,6 +28,16 @@ public class IOServiceImpl implements IOService {
             }
             break;
         }
-        return scanner.nextInt();
+        int value = scanner.nextInt();
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
+        return value;
+    }
+
+    @Override
+    public String readLineWithPrompt(String formattedPrompt, Object... args) {
+        out(formattedPrompt, args);
+        return scanner.nextLine();
     }
 }

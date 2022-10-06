@@ -104,4 +104,31 @@ public class BookDaoJdbc implements BookDao {
 
         jdbc.update(sql, parameterSource);
     }
+
+    @Override
+    public void update(Book book) {
+        String sql = "UPDATE book SET " +
+                "title=:title, " +
+                "author_id=:authorId, " +
+                "genre_id=:genreId " +
+                "WHERE id=:id";
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("id", book.getId())
+                .addValue("title", book.getTitle())
+
+                .addValue("authorId",
+                        Optional.ofNullable(book.getAuthor())
+                                .map(Author::getId)
+                                .orElse(null)
+                )
+
+                .addValue("genreId",
+                        Optional.ofNullable(book.getGenre())
+                                .map(Genre::getId)
+                                .orElse(null)
+                );
+
+        jdbc.update(sql, parameterSource);
+    }
 }

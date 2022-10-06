@@ -44,7 +44,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public List<Author> findAll() {
-        String sql = "SELECT id, name FROM author";
+        String sql = "SELECT id, name FROM author ORDER BY id";
 
         return jdbc.query(sql, new AuthorRowMapper());
     }

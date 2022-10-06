@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface BookDao {
     Optional<Book> findById(long id);
+
     List<Book> findAll();
+
     void deleteByIds(Set<Long> ids);
+
+    void update(Book book);
 }

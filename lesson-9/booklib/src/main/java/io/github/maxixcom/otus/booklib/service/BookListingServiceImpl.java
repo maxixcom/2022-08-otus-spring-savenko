@@ -26,17 +26,22 @@ public class BookListingServiceImpl implements BookListingService {
             return;
         }
 
-        books.forEach(book -> {
-            ioService.out("%d. %s, %s (%s)%n",
-                    book.getId(),
-                    book.getTitle(),
-                    Optional.ofNullable(book.getAuthor())
-                            .map(Author::getName)
-                            .orElse(""),
-                    Optional.ofNullable(book.getGenre())
-                            .map(Genre::getTitle)
-                            .orElse("")
-            );
-        });
+        printList(books);
     }
+
+    private void printList(List<Book> books) {
+        books.forEach(book ->
+                ioService.out("%d. %s, %s (%s)%n",
+                        book.getId(),
+                        book.getTitle(),
+                        Optional.ofNullable(book.getAuthor())
+                                .map(Author::getName)
+                                .orElse("No Author"),
+                        Optional.ofNullable(book.getGenre())
+                                .map(Genre::getTitle)
+                                .orElse("No Genre")
+                )
+        );
+    }
+
 }

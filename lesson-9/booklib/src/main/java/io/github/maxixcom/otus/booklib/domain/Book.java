@@ -4,7 +4,7 @@ package io.github.maxixcom.otus.booklib.domain;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
+@Builder(toBuilder = true)
 @Data
 public class Book {
     private final long id;
