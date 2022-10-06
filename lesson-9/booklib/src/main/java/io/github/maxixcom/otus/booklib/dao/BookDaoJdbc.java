@@ -28,7 +28,7 @@ public class BookDaoJdbc implements BookDao {
                     .id(rs.getLong("id"))
                     .title(rs.getString("title"));
 
-            Long genreId = rs.getLong("genre_id");
+            long genreId = rs.getLong("genre_id");
             if (!rs.wasNull()) {
                 Genre genre = Genre.builder()
                         .id(genreId)
@@ -38,7 +38,7 @@ public class BookDaoJdbc implements BookDao {
                 bookBuilder.genre(genre);
             }
 
-            Long authorId = rs.getLong("author_id");
+            long authorId = rs.getLong("author_id");
             if (!rs.wasNull()) {
                 Author author = Author.builder()
                         .id(authorId)
