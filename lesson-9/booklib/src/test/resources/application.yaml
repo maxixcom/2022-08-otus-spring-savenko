@@ -4,7 +4,7 @@ spring:
       enabled: false
 
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
 
   liquibase:
     enabled: true
