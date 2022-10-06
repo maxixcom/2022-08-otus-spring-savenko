@@ -1,5 +1,14 @@
 databaseChangeLog:
   - changeSet:
+      id: seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_genre_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
       id: 2022-10-05--0001--genre
       author: maxix
       createTable:
@@ -8,7 +17,7 @@ databaseChangeLog:
           - column:
               name: id
               type: bigint
-              autoIncrement: true
+              defaultValueSequenceNext: seq_genre_id
               constraints:
                 nullable: false
                 primaryKey: true
