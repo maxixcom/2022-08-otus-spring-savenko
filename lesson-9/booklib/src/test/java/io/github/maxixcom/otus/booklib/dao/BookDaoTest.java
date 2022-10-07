@@ -23,7 +23,7 @@ class BookDaoTest {
     void shouldReturnAllBooks() {
         List<Book> bookList = bookDaoJdbc.findAll();
 
-        Assertions.assertThat(bookList).size().isEqualTo(10);
+        Assertions.assertThat(bookList).hasSize(10);
     }
 
     @Test

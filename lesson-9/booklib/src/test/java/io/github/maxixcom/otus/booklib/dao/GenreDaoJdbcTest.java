@@ -18,6 +18,6 @@ class GenreDaoJdbcTest {
     @Test
     void shouldReturnAllGenres() {
         List<Genre> genreList = genreDao.findAll();
-        Assertions.assertThat(genreList).size().isEqualTo(10);
+        Assertions.assertThat(genreList).hasSize(10);
     }
 }
