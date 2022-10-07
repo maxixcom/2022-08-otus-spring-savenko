@@ -15,7 +15,14 @@ import java.util.List;
 public class AuthorDaoJdbc implements AuthorDao {
     private final NamedParameterJdbcOperations jdbc;
 
-    static class AuthorRowMapper implements RowMapper<Author> {
+    @Override
+    public List<Author> findAll() {
+        String sql = "SELECT id, name FROM author ORDER BY id";
+
+        return jdbc.query(sql, new AuthorRowMapper());
+    }
+
+    private static class AuthorRowMapper implements RowMapper<Author> {
 
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -24,12 +31,5 @@ public class AuthorDaoJdbc implements AuthorDao {
                     .name(rs.getString("name"))
                     .build();
         }
-    }
-
-    @Override
-    public List<Author> findAll() {
-        String sql = "SELECT id, name FROM author ORDER BY id";
-
-        return jdbc.query(sql, new AuthorRowMapper());
     }
 }

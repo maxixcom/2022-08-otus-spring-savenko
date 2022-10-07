@@ -133,7 +133,7 @@ public class BookDaoJdbc implements BookDao {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    static class BookRowMapper implements RowMapper<Book> {
+    private static class BookRowMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book.BookBuilder bookBuilder = Book.builder()

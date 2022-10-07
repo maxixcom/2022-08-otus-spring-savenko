@@ -18,6 +18,6 @@ class AuthorDaoJdbcTest {
     @Test
     void shouldReturnAllAuthors() {
         List<Author> authorList = authorDao.findAll();
-        Assertions.assertThat(authorList).size().isEqualTo(10);
+        Assertions.assertThat(authorList).hasSize(10);
     }
 }

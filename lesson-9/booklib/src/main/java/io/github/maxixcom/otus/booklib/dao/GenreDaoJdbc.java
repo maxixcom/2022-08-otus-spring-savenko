@@ -22,7 +22,7 @@ public class GenreDaoJdbc implements GenreDao {
         return jdbc.query(sql, new GenreRowMapper());
     }
 
-    static class GenreRowMapper implements RowMapper<Genre> {
+    private static class GenreRowMapper implements RowMapper<Genre> {
         @Override
         public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {
             return Genre.builder()
