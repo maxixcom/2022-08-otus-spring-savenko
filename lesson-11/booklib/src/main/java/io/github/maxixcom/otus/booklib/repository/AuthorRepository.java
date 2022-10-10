@@ -1,9 +1,9 @@
-package io.github.maxixcom.otus.booklib.dao;
+package io.github.maxixcom.otus.booklib.repository;
 
 import io.github.maxixcom.otus.booklib.domain.Author;
 
 import java.util.List;
 
-public interface AuthorDao {
+public interface AuthorRepository {
     List<Author> findAll();
 }

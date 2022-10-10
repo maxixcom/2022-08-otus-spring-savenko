@@ -1,7 +1,7 @@
 package io.github.maxixcom.otus.booklib.service.selector;
 
-import io.github.maxixcom.otus.booklib.dao.GenreDao;
 import io.github.maxixcom.otus.booklib.domain.Genre;
+import io.github.maxixcom.otus.booklib.repository.GenreRepository;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import java.util.Optional;
 @Service
 public class GenreSelectorServiceImpl implements GenreSelectorService {
     private final IOService ioService;
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
     @Override
     public Optional<Genre> selectGenre() {
-        List<Genre> genres = genreDao.findAll();
+        List<Genre> genres = genreRepository.findAll();
         if (genres.isEmpty()) {
             ioService.out("No genres to select%n");
             return Optional.empty();

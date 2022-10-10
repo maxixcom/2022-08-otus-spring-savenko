@@ -1,14 +1,15 @@
-package io.github.maxixcom.otus.booklib.service;
+package io.github.maxixcom.otus.booklib.service.book;
 
-import io.github.maxixcom.otus.booklib.dao.BookDao;
 import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.domain.Genre;
+import io.github.maxixcom.otus.booklib.repository.BookRepository;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
 import io.github.maxixcom.otus.booklib.service.selector.GenreSelectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -17,13 +18,14 @@ import java.util.function.Consumer;
 @Service
 public class BookUpdateServiceImpl implements BookUpdateService {
     private final IOService ioService;
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
     private final AuthorSelectorService authorSelectorService;
     private final GenreSelectorService genreSelectorService;
 
+    @Transactional
     @Override
     public void updateBook(long bookId) {
-        bookDao.findById(bookId)
+        bookRepository.findById(bookId)
                 .ifPresentOrElse(
                         this::updateBookInteractive,
                         () -> ioService.out("Book #%d not found%n", bookId)
@@ -31,20 +33,19 @@ public class BookUpdateServiceImpl implements BookUpdateService {
     }
 
     private void updateBookInteractive(Book book) {
-        Book.BookBuilder bookBuilder = book.toBuilder();
 
         updateBookTitle(book, newTitle -> {
             if (!newTitle.isBlank()) {
-                bookBuilder.title(newTitle);
+                book.setTitle(newTitle);
             }
         });
 
-        selectBookAuthor(book, bookBuilder::author);
-        selectBookGenre(book, bookBuilder::genre);
+        selectBookAuthor(book, book::setAuthor);
+        selectBookGenre(book, book::setGenre);
 
-        bookDao.update(bookBuilder.build());
+        Book updatedBook = bookRepository.save(book);
 
-        ioService.out("%nBook #%d updated%n", book.getId());
+        ioService.out("%nBook #%d updated%n", updatedBook.getId());
     }
 
     private void updateBookTitle(Book book, Consumer<String> updateFunction) {

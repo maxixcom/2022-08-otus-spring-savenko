@@ -1,9 +1,9 @@
-package io.github.maxixcom.otus.booklib.dao;
+package io.github.maxixcom.otus.booklib.repository;
 
 import io.github.maxixcom.otus.booklib.domain.Genre;
 
 import java.util.List;
 
-public interface GenreDao {
+public interface GenreRepository {
     List<Genre> findAll();
 }

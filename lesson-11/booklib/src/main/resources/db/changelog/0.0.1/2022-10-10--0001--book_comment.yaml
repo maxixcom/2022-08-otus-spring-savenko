@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-10-10--0001--book_comment-seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_book_comment_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-10-10--0001--book_comment-table
+      author: maxix
+      createTable:
+        tableName: book_comment
+        columns:
+          - column:
+              name: id
+              type: bigint
+              defaultValueSequenceNext: seq_book_comment_id
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_book_comment
+          - column:
+              name: book_id
+              type: long
+          - column:
+              name: comment
+              type: varchar(150)
+
+  - changeSet:
+      id: 2022-10-10--0001--book_comment-idx-fk-book
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: book_id
+            indexName: idx_fk_book_comment_book
+            tableName: book_comment
+
+  - changeSet:
+      id: 2022-10-10--0001--book_comment-fk-book
+      author: maxix
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: book_comment
+            constraintName: fk_book_comment_book
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: book

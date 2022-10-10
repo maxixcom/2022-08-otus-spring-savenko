@@ -1,7 +1,7 @@
 
 package io.github.maxixcom.otus.booklib.command;
 
-import io.github.maxixcom.otus.booklib.service.BookCreateService;
+import io.github.maxixcom.otus.booklib.service.book.BookCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
@@ -13,7 +13,7 @@ import org.springframework.shell.standard.ShellMethod;
 public class BookCreateCommand {
     private final BookCreateService bookCreateService;
 
-    @ShellMethod(value = "Create book", key = {"c", "n", "create-book"})
+    @ShellMethod(value = "Create book", key = {"n", "create-book"})
     public void createBook() {
         bookCreateService.createBook();
     }

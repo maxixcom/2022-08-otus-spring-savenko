@@ -1,14 +1,15 @@
-package io.github.maxixcom.otus.booklib.service;
+package io.github.maxixcom.otus.booklib.service.book;
 
-import io.github.maxixcom.otus.booklib.dao.BookDao;
 import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.domain.Genre;
+import io.github.maxixcom.otus.booklib.repository.BookRepository;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
 import io.github.maxixcom.otus.booklib.service.selector.GenreSelectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -16,26 +17,28 @@ import java.util.Optional;
 @Service
 public class BookCreateServiceImpl implements BookCreateService {
     private final IOService ioService;
-    private final BookDao bookDao;
+    private final BookRepository bookRepository;
     private final AuthorSelectorService authorSelectorService;
     private final GenreSelectorService genreSelectorService;
 
+    @Transactional
     @Override
     public void createBook() {
         Book book = collectBookInfo();
 
-        long bookId = bookDao.insert(book);
+        book = bookRepository.save(book);
 
-        ioService.out("%nBook #%d created%n", bookId);
+        ioService.out("%nBook #%d created%n", book.getId());
     }
 
     private Book collectBookInfo() {
-        Book.BookBuilder bookBuilder = Book.builder()
-                .title(inputBookTitle())
-                .author(selectBookAuthor().orElse(null))
-                .genre(selectBookGenre().orElse(null));
+        Book book = new Book();
 
-        return bookBuilder.build();
+        book.setTitle(inputBookTitle());
+        book.setAuthor(selectBookAuthor().orElse(null));
+        book.setGenre(selectBookGenre().orElse(null));
+
+        return book;
     }
 
     private String inputBookTitle() {
