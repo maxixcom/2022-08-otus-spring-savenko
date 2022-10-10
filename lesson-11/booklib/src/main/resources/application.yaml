@@ -2,8 +2,9 @@ server:
   port: 8089
 
 spring:
-  #  profiles:
-  #    active: dev
+  profiles:
+    active: dev
+
   datasource:
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
 

@@ -9,6 +9,8 @@ import java.util.Set;
 public interface BookRepository {
     Optional<Book> findById(long id);
 
+    Optional<Book> findByIdWithComments(long id);
+
     List<Book> findAll();
 
     void deleteByIds(Set<Long> ids);
