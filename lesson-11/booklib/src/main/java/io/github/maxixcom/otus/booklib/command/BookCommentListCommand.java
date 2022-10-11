@@ -13,7 +13,7 @@ import org.springframework.shell.standard.ShellMethod;
 public class BookCommentListCommand {
     private final BookCommentListService bookCommentListService;
 
-    @ShellMethod(value = "Update book info", key = {"lc", "list-book-comment"})
+    @ShellMethod(value = "List book comments", key = {"lc", "pc", "list-book-comment"})
     public void listBookComments(long bookId) {
         bookCommentListService.outListOfAllBookComments(bookId);
     }

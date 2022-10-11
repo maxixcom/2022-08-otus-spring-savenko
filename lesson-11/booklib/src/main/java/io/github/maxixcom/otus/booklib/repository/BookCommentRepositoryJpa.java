@@ -10,7 +10,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
-public class BookCommentRepositoryImpl implements BookCommentRepository {
+public class BookCommentRepositoryJpa implements BookCommentRepository {
     private final EntityManager entityManager;
 
     @Override

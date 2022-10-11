@@ -13,7 +13,7 @@ import org.springframework.shell.standard.ShellMethod;
 public class BookCommentUpdateCommand {
     private final BookCommentUpdateService bookCommentUpdateService;
 
-    @ShellMethod(value = "Update book info", key = {"uc", "ec", "update-comment"})
+    @ShellMethod(value = "Update book comment", key = {"uc", "ec", "update-comment"})
     public void updateComment(Long commentId) {
         bookCommentUpdateService.updateComment(commentId);
     }

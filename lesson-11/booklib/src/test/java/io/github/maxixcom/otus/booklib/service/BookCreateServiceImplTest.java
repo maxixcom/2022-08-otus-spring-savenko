@@ -1,7 +1,7 @@
 package io.github.maxixcom.otus.booklib.service;
 
-import io.github.maxixcom.otus.booklib.dao.BookDao;
 import io.github.maxixcom.otus.booklib.domain.Book;
+import io.github.maxixcom.otus.booklib.repository.BookRepository;
 import io.github.maxixcom.otus.booklib.service.book.BookCreateServiceImpl;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
@@ -20,7 +20,7 @@ class BookCreateServiceImplTest {
     @Autowired
     private BookCreateServiceImpl bookCreateService;
     @Autowired
-    private BookDao bookDao;
+    private BookRepository bookRepository;
     @MockBean
     private IOService ioService;
     @MockBean
@@ -38,7 +38,7 @@ class BookCreateServiceImplTest {
 
         bookCreateService.createBook();
 
-        Optional<Book> bookOptional = bookDao.findById(100);
+        Optional<Book> bookOptional = bookRepository.findById(100);
 
         Assertions.assertThat(bookOptional)
                 .isPresent()
