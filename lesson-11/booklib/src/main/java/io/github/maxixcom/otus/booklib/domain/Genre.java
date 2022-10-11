@@ -25,6 +25,7 @@ public class Genre {
     @SequenceGenerator(name = "seq_genre_id", sequenceName = "seq_genre_id", allocationSize = 1)
     @Column(name = "id")
     private long id;
+
     @Column(name = "title")
     private String title;
 }

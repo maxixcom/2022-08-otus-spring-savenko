@@ -25,6 +25,7 @@ public class Author {
     @SequenceGenerator(name = "seq_author_id", sequenceName = "seq_author_id", allocationSize = 1)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "name")
     private String name;
 }
