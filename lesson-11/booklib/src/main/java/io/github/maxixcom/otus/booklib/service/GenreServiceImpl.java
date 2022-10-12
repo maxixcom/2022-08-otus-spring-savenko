@@ -1,4 +1,4 @@
-package io.github.maxixcom.otus.booklib.service.book;
+package io.github.maxixcom.otus.booklib.service;
 
 import io.github.maxixcom.otus.booklib.domain.Genre;
 import io.github.maxixcom.otus.booklib.repository.GenreRepository;
