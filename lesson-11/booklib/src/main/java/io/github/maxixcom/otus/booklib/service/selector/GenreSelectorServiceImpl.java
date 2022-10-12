@@ -1,7 +1,7 @@
 package io.github.maxixcom.otus.booklib.service.selector;
 
 import io.github.maxixcom.otus.booklib.domain.Genre;
-import io.github.maxixcom.otus.booklib.repository.GenreRepository;
+import io.github.maxixcom.otus.booklib.service.book.GenreService;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import java.util.Optional;
 @Service
 public class GenreSelectorServiceImpl implements GenreSelectorService {
     private final IOService ioService;
-    private final GenreRepository genreRepository;
+    private final GenreService genreService;
 
     @Override
-    public Optional<Genre> selectGenre() {
-        List<Genre> genres = genreRepository.findAll();
+    public Optional<Long> selectGenre() {
+        List<Genre> genres = genreService.getAllGenres();
         if (genres.isEmpty()) {
             ioService.out("No genres to select%n");
             return Optional.empty();
@@ -28,16 +28,17 @@ public class GenreSelectorServiceImpl implements GenreSelectorService {
         int id = ioService.readIntWithPrompt("%nSelect genre id: ");
 
         return genres.stream()
-                .filter(author -> author.getId() == id)
-                .findAny();
+                .filter(genre -> genre.getId() == id)
+                .findAny()
+                .map(Genre::getId);
     }
 
 
     private void printList(List<Genre> authors) {
-        authors.forEach(author ->
+        authors.forEach(genre ->
                 ioService.out("%d. %s%n",
-                        author.getId(),
-                        author.getTitle()
+                        genre.getId(),
+                        genre.getTitle()
                 )
         );
     }

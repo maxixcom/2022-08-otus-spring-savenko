@@ -1,28 +1,22 @@
-package io.github.maxixcom.otus.booklib.service.book;
+package io.github.maxixcom.otus.booklib.service.book.interaction;
 
 import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.domain.Genre;
-import io.github.maxixcom.otus.booklib.repository.BookRepository;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class BookListingServiceImpl implements BookListingService {
+public class ListBookInteractionImpl implements ListBookInteraction {
     private final IOService ioService;
-    private final BookRepository bookRepository;
 
-    @Transactional(readOnly = true)
     @Override
-    public void outListOfAllBooks() {
-        List<Book> books = bookRepository.findAll();
-
+    public void listBooks(List<Book> books) {
         if (books.isEmpty()) {
             ioService.out("No books. Library is empty!%n%n");
             return;
@@ -45,5 +39,4 @@ public class BookListingServiceImpl implements BookListingService {
                 )
         );
     }
-
 }

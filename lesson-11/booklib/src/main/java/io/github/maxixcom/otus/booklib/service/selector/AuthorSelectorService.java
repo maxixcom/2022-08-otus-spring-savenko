@@ -5,5 +5,5 @@ import io.github.maxixcom.otus.booklib.domain.Author;
 import java.util.Optional;
 
 public interface AuthorSelectorService {
-    Optional<Author> selectAuthor();
+    Optional<Long> selectAuthor();
 }

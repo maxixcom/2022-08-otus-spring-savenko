@@ -2,7 +2,7 @@ package io.github.maxixcom.otus.booklib.service;
 
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.repository.BookRepository;
-import io.github.maxixcom.otus.booklib.service.book.BookCreateServiceImpl;
+import io.github.maxixcom.otus.booklib.service.book.BookCommandService;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
 import io.github.maxixcom.otus.booklib.service.selector.GenreSelectorService;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @SpringBootTest
 class BookCreateServiceImplTest {
     @Autowired
-    private BookCreateServiceImpl bookCreateService;
+    private BookCommandService bookCommandService;
     @Autowired
     private BookRepository bookRepository;
     @MockBean
@@ -36,7 +36,7 @@ class BookCreateServiceImplTest {
                 .thenReturn("\n")
                 .thenReturn("\n");
 
-        bookCreateService.createBook();
+        bookCommandService.createBook();
 
         Optional<Book> bookOptional = bookRepository.findById(100);
 

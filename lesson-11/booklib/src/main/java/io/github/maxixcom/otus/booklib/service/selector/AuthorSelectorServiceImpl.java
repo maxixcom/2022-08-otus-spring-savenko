@@ -1,7 +1,7 @@
 package io.github.maxixcom.otus.booklib.service.selector;
 
 import io.github.maxixcom.otus.booklib.domain.Author;
-import io.github.maxixcom.otus.booklib.repository.AuthorRepository;
+import io.github.maxixcom.otus.booklib.service.book.AuthorService;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import java.util.Optional;
 @Service
 public class AuthorSelectorServiceImpl implements AuthorSelectorService {
     private final IOService ioService;
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
 
     @Override
-    public Optional<Author> selectAuthor() {
-        List<Author> authors = authorRepository.findAll();
+    public Optional<Long> selectAuthor() {
+        List<Author> authors = authorService.getAllAuthors();
         if (authors.isEmpty()) {
             ioService.out("No authors to select%n");
             return Optional.empty();
@@ -29,7 +29,8 @@ public class AuthorSelectorServiceImpl implements AuthorSelectorService {
 
         return authors.stream()
                 .filter(author -> author.getId() == id)
-                .findAny();
+                .findAny()
+                .map(Author::getId);
     }
 
     private void printList(List<Author> authors) {

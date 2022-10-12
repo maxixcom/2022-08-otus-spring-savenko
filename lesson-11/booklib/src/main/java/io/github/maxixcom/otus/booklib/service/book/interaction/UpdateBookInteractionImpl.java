@@ -1,51 +1,52 @@
-package io.github.maxixcom.otus.booklib.service.book;
+package io.github.maxixcom.otus.booklib.service.book.interaction;
 
 import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.domain.Genre;
-import io.github.maxixcom.otus.booklib.repository.BookRepository;
+import io.github.maxixcom.otus.booklib.service.book.BookService;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
 import io.github.maxixcom.otus.booklib.service.selector.GenreSelectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 @Service
-public class BookUpdateServiceImpl implements BookUpdateService {
+public class UpdateBookInteractionImpl implements UpdateBookInteraction {
     private final IOService ioService;
-    private final BookRepository bookRepository;
     private final AuthorSelectorService authorSelectorService;
     private final GenreSelectorService genreSelectorService;
 
-    @Transactional
     @Override
-    public void updateBook(long bookId) {
-        bookRepository.findById(bookId)
-                .ifPresentOrElse(
-                        this::updateBookInteractive,
-                        () -> ioService.out("Book #%d not found%n", bookId)
-                );
-    }
+    public BookService.UpdateBookDto collectBookUpdateInfo(Book book) {
+        BookService.UpdateBookDto updateBookDto = new BookService.UpdateBookDto();
 
-    private void updateBookInteractive(Book book) {
+        updateBookDto.setBookId(book.getId());
+        updateBookDto.setTitle(book.getTitle());
+        updateBookDto.setAuthorId(
+                Optional.ofNullable(book.getAuthor())
+                        .map(Author::getId)
+                        .orElse(null)
+        );
+        updateBookDto.setGenreId(
+                Optional.ofNullable(book.getGenre())
+                        .map(Genre::getId)
+                        .orElse(null)
+        );
 
         updateBookTitle(book, newTitle -> {
             if (!newTitle.isBlank()) {
-                book.setTitle(newTitle);
+                updateBookDto.setTitle(newTitle);
             }
         });
 
-        selectBookAuthor(book, book::setAuthor);
-        selectBookGenre(book, book::setGenre);
+        selectBookAuthor(book, updateBookDto::setAuthorId);
+        selectBookGenre(book, updateBookDto::setGenreId);
 
-        Book updatedBook = bookRepository.save(book);
-
-        ioService.out("%nBook #%d updated%n", updatedBook.getId());
+        return updateBookDto;
     }
 
     private void updateBookTitle(Book book, Consumer<String> updateFunction) {
@@ -56,7 +57,7 @@ public class BookUpdateServiceImpl implements BookUpdateService {
         updateFunction.accept(newTitle);
     }
 
-    private void selectBookAuthor(Book book, Consumer<Author> updateFunction) {
+    private void selectBookAuthor(Book book, Consumer<Long> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Author (%s - enter to leave current, r - reset, l - for select): ",
@@ -82,7 +83,7 @@ public class BookUpdateServiceImpl implements BookUpdateService {
         }
     }
 
-    private void selectBookGenre(Book book, Consumer<Genre> updateFunction) {
+    private void selectBookGenre(Book book, Consumer<Long> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Genre (%s - enter to leave current, r - reset, l - for select): ",

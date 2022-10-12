@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,18 @@ public class BookRepositoryJpa implements BookRepository {
     @Override
     public Optional<Book> findById(long id) {
         return Optional.ofNullable(entityManager.find(Book.class, id));
+    }
+
+    public Optional<Book> findByIdWithAuthorAndGenre(long id) {
+        Book book = entityManager.find(
+                Book.class,
+                id,
+                Collections.singletonMap(
+                        "javax.persistence.fetchgraph",
+                        entityManager.getEntityGraph("book-author-genre-graph")
+                )
+        );
+        return Optional.ofNullable(book);
     }
 
     @Override
