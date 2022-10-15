@@ -11,3 +11,4 @@
 4. [AOP, Spring AOP](lesson-4/hometask-quiz/)
 5. [Продвинутая конфигурация (Spring Shell)](lesson-7/hometask-quiz/)
 6. [DAO на Spring JDBC](lesson-9/booklib/)
+6. [JPQL, Spring ORM, DAO на основе Spring ORM + JPA](lesson-11/booklib/)
