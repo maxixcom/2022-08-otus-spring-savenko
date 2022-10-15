@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findAllWithAuthorAndGenres();
     }
 
     @Transactional
@@ -73,12 +73,12 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public void deleteBooks(Set<Long> bookIds) {
-        bookRepository.deleteByIds(bookIds);
+        bookRepository.deleteAllByIdInBatch(bookIds);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<Book> getBookById(long id) {
-        return bookRepository.findByIdWithAuthorAndGenre(id);
+        return bookRepository.findBookWithAuthorAndGenreById(id);
     }
 }

@@ -1,14 +1,7 @@
 package io.github.maxixcom.otus.booklib.repository;
 
 import io.github.maxixcom.otus.booklib.domain.BookComment;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-import java.util.Set;
-
-public interface BookCommentRepository {
-    Optional<BookComment> findById(long id);
-
-    void deleteByIds(Set<Long> ids);
-
-    BookComment save(BookComment bookComment);
+public interface BookCommentRepository extends JpaRepository<BookComment, Long> {
 }

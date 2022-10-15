@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,17 +15,16 @@ import java.util.Optional;
 import java.util.Set;
 
 @DataJpaTest
-@Import(BookRepositoryJpa.class)
 class BookRepositoryJpaTest {
     @Autowired
     private TestEntityManager em;
     @Autowired
-    private BookRepositoryJpa bookRepositoryJpa;
+    private BookRepository bookRepository;
 
     @Test
     void shouldReturnBookById() {
         Book expectedBook = em.find(Book.class, 1L);
-        Optional<Book> bookOptional = bookRepositoryJpa.findById(1L);
+        Optional<Book> bookOptional = bookRepository.findById(1L);
 
         Assertions.assertThat(bookOptional)
                 .isPresent()
@@ -38,7 +36,7 @@ class BookRepositoryJpaTest {
 
     @Test
     void shouldReturnAllBooks() {
-        List<Book> bookList = bookRepositoryJpa.findAll();
+        List<Book> bookList = bookRepository.findAll();
 
         Assertions.assertThat(bookList).hasSizeGreaterThan(0);
     }
@@ -53,7 +51,7 @@ class BookRepositoryJpaTest {
                 Collections.emptyList()
         );
 
-        Book savedBook = bookRepositoryJpa.save(book);
+        Book savedBook = bookRepository.save(book);
 
         Assertions.assertThat(savedBook.getId()).isGreaterThan(0);
 
@@ -72,7 +70,7 @@ class BookRepositoryJpaTest {
         Book book = em.find(Book.class, 1L);
         book.setTitle("Book Title");
 
-        bookRepositoryJpa.save(book);
+        bookRepository.save(book);
 
         em.flush();
         em.detach(book);
@@ -90,7 +88,7 @@ class BookRepositoryJpaTest {
         Assertions.assertThat(em.find(Book.class, 1L)).isNotNull();
         Assertions.assertThat(em.find(Book.class, 2L)).isNotNull();
 
-        bookRepositoryJpa.deleteByIds(Set.of(1L, 2L));
+        bookRepository.deleteAllByIdInBatch(Set.of(1L, 2L));
         em.clear();
 
         Assertions.assertThat(em.find(Book.class, 1L)).isNull();

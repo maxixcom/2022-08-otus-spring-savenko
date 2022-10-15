@@ -15,9 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -28,21 +25,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@NamedEntityGraphs({
-        @NamedEntityGraph(
-                name = "book-comments-graph",
-                attributeNodes = {
-                        @NamedAttributeNode("bookComments")
-                }
-        ),
-        @NamedEntityGraph(
-                name = "book-author-genre-graph",
-                attributeNodes = {
-                        @NamedAttributeNode("author"),
-                        @NamedAttributeNode("genre")
-                }
-        )
-})
 @Entity
 @Table(name = "book")
 public class Book {

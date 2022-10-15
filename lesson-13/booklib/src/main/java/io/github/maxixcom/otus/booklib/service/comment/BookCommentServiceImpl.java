@@ -22,7 +22,7 @@ public class BookCommentServiceImpl implements BookCommentService {
     @Transactional(readOnly = true)
     @Override
     public List<BookComment> getAllBookComments(long bookId) {
-        return bookRepository.findByIdWithComments(bookId)
+        return bookRepository.findWithCommentsById(bookId)
                 .map(Book::getBookComments)
                 .orElse(Collections.emptyList());
     }
@@ -63,6 +63,6 @@ public class BookCommentServiceImpl implements BookCommentService {
     @Transactional
     @Override
     public void deleteBookComments(Set<Long> commentIds) {
-        bookCommentRepository.deleteByIds(commentIds);
+        bookCommentRepository.deleteAllByIdInBatch(commentIds);
     }
 }

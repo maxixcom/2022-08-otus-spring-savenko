@@ -7,19 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 import java.util.Set;
 
 @DataJpaTest
-@Import(BookCommentRepositoryJpa.class)
 class BookCommentRepositoryJpaTest {
     @Autowired
     private TestEntityManager em;
 
     @Autowired
-    private BookCommentRepositoryJpa bookCommentRepositoryJpa;
+    private BookCommentRepository bookCommentRepository;
 
     @Test
     void shouldReturnBookCommentById() {
@@ -34,7 +32,7 @@ class BookCommentRepositoryJpaTest {
 
         Assertions.assertThat(bookComment.getId()).isGreaterThan(0);
 
-        Optional<BookComment> bookCommentOptional = bookCommentRepositoryJpa.findById(bookComment.getId());
+        Optional<BookComment> bookCommentOptional = bookCommentRepository.findById(bookComment.getId());
 
         Assertions.assertThat(bookCommentOptional)
                 .isPresent()
@@ -69,7 +67,7 @@ class BookCommentRepositoryJpaTest {
         em.detach(bookComment_1);
         em.detach(bookComment_2);
 
-        bookCommentRepositoryJpa.deleteByIds(Set.of(
+        bookCommentRepository.deleteAllByIdInBatch(Set.of(
                 bookComment_1.getId(),
                 bookComment_2.getId()
         ));

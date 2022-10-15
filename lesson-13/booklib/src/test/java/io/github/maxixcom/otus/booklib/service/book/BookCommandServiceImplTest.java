@@ -22,11 +22,11 @@ class BookCommandServiceImplTest {
     private BookRepository bookRepository;
     @MockBean
     private IOService ioService;
-    @MockBean
+    @Autowired
     private BookInteraction bookInteraction;
-    @MockBean
+    @Autowired
     private AuthorSelectorService authorSelectorService;
-    @MockBean
+    @Autowired
     private GenreSelectorService genreSelectorService;
 
     @Test
@@ -39,7 +39,7 @@ class BookCommandServiceImplTest {
 
         bookCommandService.createBook();
 
-        Optional<Book> bookOptional = bookRepository.findById(100);
+        Optional<Book> bookOptional = bookRepository.findById(100L);
 
         Assertions.assertThat(bookOptional)
                 .isPresent()
