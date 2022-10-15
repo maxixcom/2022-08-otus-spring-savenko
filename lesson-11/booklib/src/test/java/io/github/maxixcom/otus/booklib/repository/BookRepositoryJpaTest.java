@@ -57,15 +57,14 @@ class BookRepositoryJpaTest {
 
         Assertions.assertThat(savedBook.getId()).isGreaterThan(0);
 
-        Optional<Book> bookOptional = bookRepositoryJpa.findById(savedBook.getId());
-        Assertions.assertThat(bookOptional)
-                .isPresent()
-                .containsInstanceOf(Book.class)
-                .hasValueSatisfying(b -> {
-                    Assertions.assertThat(b.getTitle()).isEqualTo("Book Title");
-                    Assertions.assertThat(b.getAuthor().getId()).isEqualTo(1);
-                    Assertions.assertThat(b.getGenre().getId()).isEqualTo(2);
-                });
+        em.find(Book.class, savedBook.getId());
+
+        Book actualBook = em.find(Book.class, savedBook.getId());
+        org.junit.jupiter.api.Assertions.assertAll(
+                () -> Assertions.assertThat(actualBook).isNotNull(),
+                () -> Assertions.assertThat(actualBook.getAuthor().getId()).isEqualTo(1),
+                () -> Assertions.assertThat(actualBook.getGenre().getId()).isEqualTo(2)
+        );
     }
 
     @Test
@@ -78,25 +77,23 @@ class BookRepositoryJpaTest {
         em.flush();
         em.detach(book);
 
-        Optional<Book> bookOptional = bookRepositoryJpa.findById(1);
 
-        Assertions.assertThat(bookOptional)
-                .isPresent()
-                .containsInstanceOf(Book.class)
-                .hasValueSatisfying(b -> {
-                    Assertions.assertThat(b.getTitle()).isEqualTo("Book Title");
-                });
+        Book actualBook = em.find(Book.class, 1L);
+        org.junit.jupiter.api.Assertions.assertAll(
+                () -> Assertions.assertThat(actualBook).isNotNull(),
+                () -> Assertions.assertThat(actualBook.getTitle()).isEqualTo("Book Title")
+        );
     }
 
     @Test
     void shouldDeleteSetOfBooks() {
-        Assertions.assertThat(bookRepositoryJpa.findById(1)).isPresent();
-        Assertions.assertThat(bookRepositoryJpa.findById(2)).isPresent();
+        Assertions.assertThat(em.find(Book.class, 1L)).isNotNull();
+        Assertions.assertThat(em.find(Book.class, 2L)).isNotNull();
 
         bookRepositoryJpa.deleteByIds(Set.of(1L, 2L));
         em.clear();
 
-        Assertions.assertThat(bookRepositoryJpa.findById(1)).isEmpty();
-        Assertions.assertThat(bookRepositoryJpa.findById(2)).isEmpty();
+        Assertions.assertThat(em.find(Book.class, 1L)).isNull();
+        Assertions.assertThat(em.find(Book.class, 2L)).isNull();
     }
 }

@@ -5,6 +5,8 @@ import io.github.maxixcom.otus.booklib.exception.BookNotFoundException;
 import io.github.maxixcom.otus.booklib.repository.AuthorRepository;
 import io.github.maxixcom.otus.booklib.repository.BookRepository;
 import io.github.maxixcom.otus.booklib.repository.GenreRepository;
+import io.github.maxixcom.otus.booklib.service.book.dto.CreateBookDto;
+import io.github.maxixcom.otus.booklib.service.book.dto.UpdateBookDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

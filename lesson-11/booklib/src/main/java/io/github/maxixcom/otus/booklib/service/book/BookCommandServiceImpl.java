@@ -1,9 +1,7 @@
 package io.github.maxixcom.otus.booklib.service.book;
 
 import io.github.maxixcom.otus.booklib.domain.Book;
-import io.github.maxixcom.otus.booklib.service.book.interaction.CreateBookInteraction;
-import io.github.maxixcom.otus.booklib.service.book.interaction.ListBookInteraction;
-import io.github.maxixcom.otus.booklib.service.book.interaction.UpdateBookInteraction;
+import io.github.maxixcom.otus.booklib.service.book.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,19 +15,17 @@ import java.util.stream.Collectors;
 public class BookCommandServiceImpl implements BookCommandService {
     private final BookService bookService;
     private final IOService ioService;
-    private final ListBookInteraction listBookInteraction;
-    private final CreateBookInteraction createBookInteraction;
-    private final UpdateBookInteraction updateBookInteraction;
+    private final BookInteraction bookInteraction;
 
     @Override
     public void listBooks() {
         List<Book> books = bookService.getAllBooks();
-        listBookInteraction.listBooks(books);
+        bookInteraction.listBooks(books);
     }
 
     @Override
     public void createBook() {
-        BookService.CreateBookDto bookDto = createBookInteraction.collectBookInfo();
+        CreateBookDto bookDto = bookInteraction.collectBookCreateInfo();
         Book book = bookService.createBook(bookDto);
         ioService.out("%nBook #%d created%n", book.getId());
     }
@@ -37,7 +33,7 @@ public class BookCommandServiceImpl implements BookCommandService {
     @Override
     public void updateBook(long bookId) {
         bookService.getBookById(bookId)
-                .map(updateBookInteraction::collectBookUpdateInfo)
+                .map(bookInteraction::collectBookUpdateInfo)
                 .map(bookService::updateBook)
                 .ifPresentOrElse(
                         book -> ioService.out("%nBook #%d updated%n", book.getId()),

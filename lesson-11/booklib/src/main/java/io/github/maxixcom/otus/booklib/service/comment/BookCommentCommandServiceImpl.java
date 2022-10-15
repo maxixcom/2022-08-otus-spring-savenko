@@ -1,8 +1,6 @@
 package io.github.maxixcom.otus.booklib.service.comment;
 
 import io.github.maxixcom.otus.booklib.domain.BookComment;
-import io.github.maxixcom.otus.booklib.service.comment.interaction.CreateBookCommentInteraction;
-import io.github.maxixcom.otus.booklib.service.comment.interaction.UpdateBookCommentInteraction;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,7 @@ public class BookCommentCommandServiceImpl implements BookCommentCommandService 
     private final BookCommentService bookCommentService;
     private final IOService ioService;
 
-    private final CreateBookCommentInteraction createBookCommentInteraction;
-    private final UpdateBookCommentInteraction updateBookCommentInteraction;
+    private final BookCommentInteraction bookCommentInteraction;
 
     @Override
     public void listBookComments(long bookId) {
@@ -39,7 +36,7 @@ public class BookCommentCommandServiceImpl implements BookCommentCommandService 
     public void createBookComment(long bookId) {
         bookCommentService.createBookComment(
                 bookId,
-                createBookCommentInteraction.collectBookCommentInfo()
+                bookCommentInteraction.collectCommentCreateInfo()
         );
     }
 
@@ -47,7 +44,7 @@ public class BookCommentCommandServiceImpl implements BookCommentCommandService 
     public void updateBookComment(long commentId) {
         bookCommentService.updateBookComment(
                 commentId,
-                updateBookCommentInteraction.collectBookCommentInfo()
+                bookCommentInteraction.collectCommentUpdateInfo()
         );
     }
 

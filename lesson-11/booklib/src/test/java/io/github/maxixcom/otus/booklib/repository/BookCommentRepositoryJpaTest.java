@@ -74,7 +74,7 @@ class BookCommentRepositoryJpaTest {
                 bookComment_2.getId()
         ));
 
-        Assertions.assertThat(bookCommentRepositoryJpa.findById(bookComment_1.getId())).isEmpty();
-        Assertions.assertThat(bookCommentRepositoryJpa.findById(bookComment_2.getId())).isEmpty();
+        Assertions.assertThat(em.find(BookComment.class, bookComment_1.getId())).isNull();
+        Assertions.assertThat(em.find(BookComment.class, bookComment_2.getId())).isNull();
     }
 }

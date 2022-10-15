@@ -2,9 +2,6 @@ package io.github.maxixcom.otus.booklib.service.book;
 
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.repository.BookRepository;
-import io.github.maxixcom.otus.booklib.service.book.interaction.CreateBookInteraction;
-import io.github.maxixcom.otus.booklib.service.book.interaction.ListBookInteraction;
-import io.github.maxixcom.otus.booklib.service.book.interaction.UpdateBookInteraction;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import io.github.maxixcom.otus.booklib.service.selector.AuthorSelectorService;
 import io.github.maxixcom.otus.booklib.service.selector.GenreSelectorService;
@@ -26,11 +23,7 @@ class BookCommandServiceImplTest {
     @MockBean
     private IOService ioService;
     @MockBean
-    private ListBookInteraction listBookInteraction;
-    @Autowired
-    private CreateBookInteraction createBookInteraction;
-    @MockBean
-    private UpdateBookInteraction updateBookInteraction;
+    private BookInteraction bookInteraction;
     @MockBean
     private AuthorSelectorService authorSelectorService;
     @MockBean
