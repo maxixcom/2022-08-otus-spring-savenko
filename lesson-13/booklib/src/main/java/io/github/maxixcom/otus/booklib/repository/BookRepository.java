@@ -15,7 +15,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @EntityGraph(attributePaths = {"bookComments"})
     Optional<Book> findWithCommentsById(long id);
 
-    @EntityGraph(attributePaths = {"author", "genre"})
     @Query(value = "select distinct b from Book b " +
             "                left join fetch b.author " +
             "                left join fetch b.genre")
