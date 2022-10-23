@@ -1,6 +1,7 @@
 package io.github.maxixcom.otus.booklib.service.comment;
 
-public interface BookCommentInteraction {
+public interface CommentInteraction {
     String collectCommentCreateInfo();
+
     String collectCommentUpdateInfo();
 }

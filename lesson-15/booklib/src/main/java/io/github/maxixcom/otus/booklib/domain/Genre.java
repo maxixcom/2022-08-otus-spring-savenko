@@ -1,31 +1,21 @@
 package io.github.maxixcom.otus.booklib.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Entity
-@Table(name = "genre")
+@Data
+@Document(collection = "genre")
 public class Genre {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_genre_id")
-    @SequenceGenerator(name = "seq_genre_id", sequenceName = "seq_genre_id", allocationSize = 1)
-    @Column(name = "id")
-    private long id;
+    private ObjectId id;
 
-    @Column(name = "title")
+    @Field(name = "title")
     private String title;
 }

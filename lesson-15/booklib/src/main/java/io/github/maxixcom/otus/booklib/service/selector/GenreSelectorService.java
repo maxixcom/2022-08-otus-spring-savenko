@@ -5,5 +5,5 @@ import io.github.maxixcom.otus.booklib.domain.Genre;
 import java.util.Optional;
 
 public interface GenreSelectorService {
-    Optional<Long> selectGenre();
+    Optional<Genre> selectGenre();
 }

@@ -12,17 +12,14 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Document(collection = "books")
-public class Book {
+@Document(collection = "comment")
+public class Comment {
     @Id
     private ObjectId id;
 
-    @Field("title")
-    private String title;
+    @Field("bookId")
+    private ObjectId bookId;
 
-    @Field("author")
-    private Author author;
-
-    @Field("genre")
-    private Genre genre;
+    @Field("comment")
+    private String comment;
 }

@@ -25,12 +25,12 @@ public class BookCommand {
     }
 
     @ShellMethod(value = "Update book info", key = {"u", "e", "update", "edit", "update-book"})
-    public void updateBook(long bookId) {
+    public void updateBook(String bookId) {
         bookCommandService.updateBook(bookId);
     }
 
     @ShellMethod(value = "Delete books", key = {"d", "del", "delete-books"})
-    public void deleteBooks(Long[] bookIds) {
+    public void deleteBooks(String[] bookIds) {
         bookCommandService.deleteBooks(Set.of(bookIds));
     }
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface BookInteraction {
     CreateBookDto collectBookCreateInfo();
+
     UpdateBookDto collectBookUpdateInfo(Book book);
+
     void listBooks(List<Book> books);
 }

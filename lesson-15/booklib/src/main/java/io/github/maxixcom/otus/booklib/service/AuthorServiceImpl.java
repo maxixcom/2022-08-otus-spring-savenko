@@ -3,6 +3,7 @@ package io.github.maxixcom.otus.booklib.service;
 import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional(readOnly = true)
     @Override
     public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+        return authorRepository.findAll(Sort.by("name"));
     }
 }

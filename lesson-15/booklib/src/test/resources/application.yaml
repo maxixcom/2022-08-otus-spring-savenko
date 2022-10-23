@@ -2,14 +2,24 @@ spring:
   shell:
     interactive:
       enabled: false
+  data:
+    mongodb:
+      port: 27018
+      database: test
 
-  datasource:
-    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+  mongodb:
+    embedded:
+      version: 5.0.0
 
-  liquibase:
-    enabled: true
-    contexts: test
+mongock:
+  enabled: false
 
-  h2:
-    console:
-      enabled: false
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            mongo:
+              embedded:
+                EmbeddedMongo: WARN

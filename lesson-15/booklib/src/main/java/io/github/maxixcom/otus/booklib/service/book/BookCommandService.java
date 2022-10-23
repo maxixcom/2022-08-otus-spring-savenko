@@ -7,7 +7,7 @@ public interface BookCommandService {
 
     void createBook();
 
-    void updateBook(long bookId);
+    void updateBook(String bookId);
 
-    void deleteBooks(Set<Long> bookIds);
+    void deleteBooks(Set<String> bookIds);
 }

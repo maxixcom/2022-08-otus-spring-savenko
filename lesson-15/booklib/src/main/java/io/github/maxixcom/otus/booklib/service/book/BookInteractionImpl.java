@@ -34,19 +34,10 @@ public class BookInteractionImpl implements BookInteraction {
     @Override
     public UpdateBookDto collectBookUpdateInfo(Book book) {
         UpdateBookDto updateBookDto = new UpdateBookDto();
-
-        updateBookDto.setBookId(book.getId());
+        updateBookDto.setBookId(book.getId().toString());
         updateBookDto.setTitle(book.getTitle());
-        updateBookDto.setAuthorId(
-                Optional.ofNullable(book.getAuthor())
-                        .map(Author::getId)
-                        .orElse(null)
-        );
-        updateBookDto.setGenreId(
-                Optional.ofNullable(book.getGenre())
-                        .map(Genre::getId)
-                        .orElse(null)
-        );
+        updateBookDto.setAuthor(book.getAuthor());
+        updateBookDto.setGenre(book.getGenre());
 
         updateBookTitle(book, newTitle -> {
             if (!newTitle.isBlank()) {
@@ -54,8 +45,8 @@ public class BookInteractionImpl implements BookInteraction {
             }
         });
 
-        updateBookAuthor(book, updateBookDto::setAuthorId);
-        updateBookGenre(book, updateBookDto::setGenreId);
+        updateBookAuthor(book, updateBookDto::setAuthor);
+        updateBookGenre(book, updateBookDto::setGenre);
 
         return updateBookDto;
     }
@@ -68,7 +59,7 @@ public class BookInteractionImpl implements BookInteraction {
         }
 
         books.forEach(book ->
-                ioService.out("%d. %s, %s (%s)%n",
+                ioService.out("%s : %s, %s (%s)%n",
                         book.getId(),
                         book.getTitle(),
                         Optional.ofNullable(book.getAuthor())
@@ -90,7 +81,7 @@ public class BookInteractionImpl implements BookInteraction {
         }
     }
 
-    private Optional<Long> selectBookAuthor() {
+    private Optional<Author> selectBookAuthor() {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt("Author (skip - enter, l - for select): ");
 
@@ -104,7 +95,7 @@ public class BookInteractionImpl implements BookInteraction {
         }
     }
 
-    private Optional<Long> selectBookGenre() {
+    private Optional<Genre> selectBookGenre() {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt("Genre (skip - enter, l - for select): ");
 
@@ -126,7 +117,7 @@ public class BookInteractionImpl implements BookInteraction {
         updateFunction.accept(newTitle);
     }
 
-    private void updateBookAuthor(Book book, Consumer<Long> updateFunction) {
+    private void updateBookAuthor(Book book, Consumer<Author> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Author (%s - enter to leave current, r - reset, l - for select): ",
@@ -152,7 +143,7 @@ public class BookInteractionImpl implements BookInteraction {
         }
     }
 
-    private void updateBookGenre(Book book, Consumer<Long> updateFunction) {
+    private void updateBookGenre(Book book, Consumer<Genre> updateFunction) {
         while (true) {
             String selectCommand = ioService.readLineWithPrompt(
                     "Genre (%s - enter to leave current, r - reset, l - for select): ",

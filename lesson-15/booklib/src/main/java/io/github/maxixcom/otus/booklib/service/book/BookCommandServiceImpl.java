@@ -27,22 +27,22 @@ public class BookCommandServiceImpl implements BookCommandService {
     public void createBook() {
         CreateBookDto bookDto = bookInteraction.collectBookCreateInfo();
         Book book = bookService.createBook(bookDto);
-        ioService.out("%nBook #%d created%n", book.getId());
+        ioService.out("%nBook %s created%n", book.getId());
     }
 
     @Override
-    public void updateBook(long bookId) {
+    public void updateBook(String bookId) {
         bookService.getBookById(bookId)
                 .map(bookInteraction::collectBookUpdateInfo)
                 .map(bookService::updateBook)
                 .ifPresentOrElse(
-                        book -> ioService.out("%nBook #%d updated%n", book.getId()),
-                        () -> ioService.out("Book #%d not found%n", bookId)
+                        book -> ioService.out("%nBook #%s updated%n", book.getId()),
+                        () -> ioService.out("Book #%s not found%n", bookId)
                 );
     }
 
     @Override
-    public void deleteBooks(Set<Long> bookIds) {
+    public void deleteBooks(Set<String> bookIds) {
         if (bookIds.isEmpty()) {
             ioService.out("Nothing to delete");
             return;

@@ -3,7 +3,6 @@ package io.github.maxixcom.otus.booklib.service.book;
 import io.github.maxixcom.otus.booklib.domain.Book;
 import io.github.maxixcom.otus.booklib.service.book.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.service.book.dto.UpdateBookDto;
-import lombok.Data;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public interface BookService {
 
     Book updateBook(UpdateBookDto dto);
 
-    void deleteBooks(Set<Long> bookIds);
+    void deleteBooks(Set<String> bookIds);
 
-    Optional<Book> getBookById(long id);
+    Optional<Book> getBookById(String id);
 }

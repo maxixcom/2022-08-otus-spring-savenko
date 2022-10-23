@@ -1,11 +1,13 @@
 package io.github.maxixcom.otus.booklib.service.book.dto;
 
+import io.github.maxixcom.otus.booklib.domain.Author;
+import io.github.maxixcom.otus.booklib.domain.Genre;
 import lombok.Data;
 
 @Data
 public class UpdateBookDto {
-    private long bookId;
+    private String bookId;
     private String title;
-    private Long authorId;
-    private Long genreId;
+    private Author author;
+    private Genre genre;
 }

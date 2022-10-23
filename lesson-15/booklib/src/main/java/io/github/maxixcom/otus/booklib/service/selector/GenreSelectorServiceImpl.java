@@ -4,6 +4,7 @@ import io.github.maxixcom.otus.booklib.domain.Genre;
 import io.github.maxixcom.otus.booklib.service.GenreService;
 import io.github.maxixcom.otus.booklib.service.io.IOService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class GenreSelectorServiceImpl implements GenreSelectorService {
     private final GenreService genreService;
 
     @Override
-    public Optional<Long> selectGenre() {
+    public Optional<Genre> selectGenre() {
         List<Genre> genres = genreService.getAllGenres();
         if (genres.isEmpty()) {
             ioService.out("No genres to select%n");
@@ -25,18 +26,17 @@ public class GenreSelectorServiceImpl implements GenreSelectorService {
 
         printList(genres);
 
-        int id = ioService.readIntWithPrompt("%nSelect genre id: ");
+        ObjectId id = new ObjectId(ioService.readLineWithPrompt("%nSelect genre id: "));
 
         return genres.stream()
-                .filter(genre -> genre.getId() == id)
-                .findAny()
-                .map(Genre::getId);
+                .filter(genre -> genre.getId().equals(id))
+                .findAny();
     }
 
 
     private void printList(List<Genre> authors) {
         authors.forEach(genre ->
-                ioService.out("%d. %s%n",
+                ioService.out("%s : %s%n",
                         genre.getId(),
                         genre.getTitle()
                 )

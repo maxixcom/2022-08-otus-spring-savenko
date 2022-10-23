@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class BookCommentInteractionImpl implements BookCommentInteraction {
+public class CommentInteractionImpl implements CommentInteraction {
     private final IOService ioService;
 
     @Override
