@@ -1,0 +1,25 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  data:
+    mongodb:
+      port: 0
+      database: test
+
+  mongodb:
+    embedded:
+      version: 5.0.0
+
+mongock:
+  enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            mongo:
+              embedded:
+                EmbeddedMongo: WARN

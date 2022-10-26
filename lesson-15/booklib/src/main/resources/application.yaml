@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      host: server
+      username: root
+      password: scout
+      database: booklib
+      authentication-database: admin
+
+mongock:
+#  runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - io.github.maxixcom.otus.booklib.mongock.changelog
+
