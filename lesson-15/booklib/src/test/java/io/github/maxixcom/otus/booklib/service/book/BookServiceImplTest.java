@@ -17,13 +17,13 @@ import java.util.Set;
 @SpringBootTest
 class BookServiceImplTest {
     @Autowired
-    BookService bookService;
+    private BookService bookService;
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
 
     @Test
     void deleteBookShouldDeleteItsComments() {

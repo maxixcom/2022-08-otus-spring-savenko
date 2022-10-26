@@ -4,7 +4,7 @@ spring:
       enabled: false
   data:
     mongodb:
-      port: 27018
+      port: 0
       database: test
 
   mongodb:
