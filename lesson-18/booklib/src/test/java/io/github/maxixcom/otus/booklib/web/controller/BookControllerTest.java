@@ -28,13 +28,13 @@ class BookControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    BookService bookService;
+    private BookService bookService;
 
     @MockBean
-    AuthorService authorService;
+    private AuthorService authorService;
 
     @MockBean
-    GenreService genreService;
+    private GenreService genreService;
 
     @Test
     void shouldReturnBookList() throws Exception {
@@ -46,6 +46,8 @@ class BookControllerTest {
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("list"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("books"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
@@ -59,6 +61,7 @@ class BookControllerTest {
     void shouldReturnCreatePage() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/create"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("create"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
@@ -105,6 +108,8 @@ class BookControllerTest {
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/edit").param("id", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("edit"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("book"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
@@ -151,6 +156,17 @@ class BookControllerTest {
 
     @Test
     void shouldReturnDeletePage() throws Exception {
+        Mockito.when(bookService.getBookById(1))
+                .thenReturn(Optional.of(new BookDto(1, "title_1", null, null)));
+
+        mvc.perform(MockMvcRequestBuilders.get("/delete").param("id", "1"))
+                .andExpect(MockMvcResultMatchers.view().name("delete"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("book"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void shouldDeleteBook() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/delete").param("id", "1"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andReturn();

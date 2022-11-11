@@ -10,13 +10,7 @@
     <title>Edit book</title>
 </head>
 <body class="d-flex flex-column h-100">
-<header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" th:href="@{/}">Booklib</a>
-        </div>
-    </nav>
-</header>
+<header th:remove="tag" th:include="fragments/header.html"></header>
 
 <!-- Begin page content -->
 <main class="flex-shrink-0 mt-5">
