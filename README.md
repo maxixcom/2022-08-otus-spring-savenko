@@ -15,3 +15,4 @@
 8. ["Белая магия" Spring Data: Spring Data JPA](lesson-13/booklib/)
 9. [Spring Data для подключения к нереляционным БД](lesson-15/booklib/)
 10. [Spring MVC View](lesson-18/booklib/)
+11. [Современные приложения на Spring MVC](lesson-19/)
