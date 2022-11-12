@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @WebMvcTest(BookController.class)
@@ -42,6 +43,26 @@ class BookControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/api/book"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+    }
+
+    @Test
+    void shouldReturnBook() throws Exception {
+        BookDto bookDto = new BookDto(1, "Book_1", null, null);
+        Mockito.when(bookService.getBookById(Mockito.eq(1L))).thenReturn(Optional.of(bookDto));
+
+        String expectedResult = mapper.writeValueAsString(bookDto);
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/book/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+    }
+
+    @Test
+    void shouldNotReturnAnyBook() throws Exception {
+        Mockito.when(bookService.getBookById(Mockito.eq(1L))).thenReturn(Optional.empty());
+
+        mvc.perform(MockMvcRequestBuilders.get("/api/book/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

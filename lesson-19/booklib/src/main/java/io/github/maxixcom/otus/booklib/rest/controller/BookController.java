@@ -3,6 +3,7 @@ package io.github.maxixcom.otus.booklib.rest.controller;
 import io.github.maxixcom.otus.booklib.dto.BookDto;
 import io.github.maxixcom.otus.booklib.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.dto.UpdateBookDto;
+import io.github.maxixcom.otus.booklib.exception.BookNotFoundException;
 import io.github.maxixcom.otus.booklib.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,11 @@ public class BookController {
     @GetMapping("/api/book")
     List<BookDto> listBooks() {
         return bookService.getAllBooks();
+    }
+
+    @GetMapping("/api/book/{id}")
+    BookDto getBook(@PathVariable long id) {
+        return bookService.getBookById(id).orElseThrow(BookNotFoundException::new);
     }
 
     @PostMapping("/api/book")
