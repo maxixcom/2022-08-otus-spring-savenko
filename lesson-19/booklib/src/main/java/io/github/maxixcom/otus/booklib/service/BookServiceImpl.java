@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book createBook(CreateBookDto dto) {
+    public long createBook(CreateBookDto dto) {
         Book book = new Book();
         book.setTitle(dto.getTitle());
         book.setAuthor(
@@ -50,13 +50,15 @@ public class BookServiceImpl implements BookService {
                         .orElse(null)
         );
 
-        return bookRepository.save(book);
+        bookRepository.save(book);
+
+        return book.getId();
     }
 
     @Transactional
     @Override
-    public Book updateBook(UpdateBookDto dto) {
-        return bookRepository.findById(dto.getId())
+    public BookDto updateBook(long id, UpdateBookDto dto) {
+        return bookRepository.findById(id)
                 .map(book -> {
                     book.setTitle(dto.getTitle());
                     book.setAuthor(
@@ -72,7 +74,8 @@ public class BookServiceImpl implements BookService {
                     return book;
                 })
                 .map(bookRepository::save)
-                .orElseThrow(() -> new BookNotFoundException("Book " + dto.getId() + " not found"));
+                .map(BookDto::fromDomainObject)
+                .orElseThrow(() -> new BookNotFoundException("Book " + id + " not found"));
     }
 
     @Transactional
@@ -87,9 +90,4 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findBookWithAuthorAndGenreById(id).map(BookDto::fromDomainObject);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<UpdateBookDto> getBookByIdForUpdate(long id) {
-        return bookRepository.findBookWithAuthorAndGenreById(id).map(UpdateBookDto::fromDomainObject);
-    }
 }

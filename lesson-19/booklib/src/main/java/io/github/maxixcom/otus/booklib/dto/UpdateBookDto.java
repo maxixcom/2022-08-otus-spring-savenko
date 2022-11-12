@@ -13,8 +13,6 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 public class UpdateBookDto {
-    private long id;
-
     @NotBlank
     @Size(max = 255)
     private String title;
@@ -25,7 +23,6 @@ public class UpdateBookDto {
 
     public static UpdateBookDto fromDomainObject(Book book) {
         return new UpdateBookDto(
-                book.getId(),
                 book.getTitle(),
                 Optional.ofNullable(book.getAuthor())
                         .map(Author::getId)

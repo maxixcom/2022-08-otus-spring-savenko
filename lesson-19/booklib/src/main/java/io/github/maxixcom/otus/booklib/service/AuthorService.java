@@ -1,6 +1,5 @@
 package io.github.maxixcom.otus.booklib.service;
 
-import io.github.maxixcom.otus.booklib.domain.Author;
 import io.github.maxixcom.otus.booklib.dto.AuthorDto;
 
 import java.util.List;

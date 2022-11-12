@@ -24,3 +24,8 @@ spring:
 #  level:
 #    ROOT: ERROR
 #    liquibase: DEBUG
+
+server:
+  error:
+    whitelabel:
+      enabled: false
