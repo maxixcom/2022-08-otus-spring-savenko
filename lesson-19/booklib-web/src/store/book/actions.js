@@ -64,7 +64,7 @@ export default {
   editBook({ commit, dispatch }, { id, title, authorId, genreId }) {
     commit('setLoading', true)
 
-    return this.$axios.$post('/api/book/' + id, { title, authorId, genreId })
+    return this.$axios.$put('/api/book/' + id, { title, authorId, genreId })
       .finally(() => commit('setLoading', false))
   }
 }

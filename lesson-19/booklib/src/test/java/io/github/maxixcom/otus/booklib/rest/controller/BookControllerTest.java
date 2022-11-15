@@ -100,7 +100,7 @@ class BookControllerTest {
         String expectedResult = mapper.writeValueAsString(expectedDto);
 
         mvc.perform(
-                        MockMvcRequestBuilders.post("/api/book/1")
+                        MockMvcRequestBuilders.put("/api/book/1")
                                 .content(requestBody)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
