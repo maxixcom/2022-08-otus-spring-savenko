@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-10-05--0001--genre-test-data
+      author: maxix
+      context: test
+      loadData:
+        primaryKey: id
+        file: data/genres.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: genre
