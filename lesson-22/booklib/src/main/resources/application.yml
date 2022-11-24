@@ -1,0 +1,6 @@
+data:
+  mongodb:
+    database: booklib
+
+demo-data:
+  load: true

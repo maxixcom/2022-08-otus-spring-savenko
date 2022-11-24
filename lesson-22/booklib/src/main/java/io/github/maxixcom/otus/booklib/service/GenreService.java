@@ -1,9 +1,8 @@
 package io.github.maxixcom.otus.booklib.service;
 
 import io.github.maxixcom.otus.booklib.dto.GenreDto;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface GenreService {
-    List<GenreDto> getAllGenres();
+    Flux<GenreDto> getAllGenres();
 }

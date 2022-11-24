@@ -1,9 +1,8 @@
 package io.github.maxixcom.otus.booklib.service;
 
 import io.github.maxixcom.otus.booklib.dto.AuthorDto;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface AuthorService {
-    List<AuthorDto> getAllAuthors();
+    Flux<AuthorDto> getAllAuthors();
 }

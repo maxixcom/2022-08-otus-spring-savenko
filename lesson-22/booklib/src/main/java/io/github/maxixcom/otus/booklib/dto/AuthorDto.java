@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class AuthorDto {
-    private final long id;
+    private final String id;
     private final String name;
 
     public static AuthorDto fromDomainObject(Author author) {

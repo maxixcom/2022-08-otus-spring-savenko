@@ -5,8 +5,7 @@ import io.github.maxixcom.otus.booklib.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,7 +13,7 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping("/api/genre")
-    List<GenreDto> listGenres() {
+    Flux<GenreDto> listGenres() {
         return genreService.getAllGenres();
     }
 }

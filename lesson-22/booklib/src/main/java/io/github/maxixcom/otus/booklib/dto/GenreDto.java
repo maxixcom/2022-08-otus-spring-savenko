@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class GenreDto {
-    private final long id;
+    private final String id;
     private final String title;
 
     public static GenreDto fromDomainObject(Genre genre) {

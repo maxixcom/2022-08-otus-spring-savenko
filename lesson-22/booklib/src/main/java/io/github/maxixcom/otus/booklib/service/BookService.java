@@ -3,19 +3,19 @@ package io.github.maxixcom.otus.booklib.service;
 import io.github.maxixcom.otus.booklib.dto.BookDto;
 import io.github.maxixcom.otus.booklib.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.dto.UpdateBookDto;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface BookService {
-    List<BookDto> getAllBooks();
+    Flux<BookDto> getAllBooks();
 
-    long createBook(CreateBookDto dto);
+    Mono<String> createBook(Mono<CreateBookDto> dto);
 
-    BookDto updateBook(long id, UpdateBookDto dto);
+    Mono<BookDto> updateBook(String id, Mono<UpdateBookDto> dto);
 
-    void deleteBooks(Set<Long> bookIds);
+    Mono<Void> deleteBooks(Set<String> bookIds);
 
-    Optional<BookDto> getBookById(long id);
+    Mono<BookDto> getBookById(String id);
 }

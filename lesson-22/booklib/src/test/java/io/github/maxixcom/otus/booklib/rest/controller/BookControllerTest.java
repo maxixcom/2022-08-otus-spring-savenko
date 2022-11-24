@@ -1,4 +1,3 @@
-
 package io.github.maxixcom.otus.booklib.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,25 +6,29 @@ import io.github.maxixcom.otus.booklib.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.dto.UpdateBookDto;
 import io.github.maxixcom.otus.booklib.service.BookService;
 import org.assertj.core.api.Assertions;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-@WebMvcTest(BookController.class)
+@WebFluxTest(BookController.class)
 class BookControllerTest {
     @Autowired
-    private MockMvc mvc;
+    private WebTestClient webClient;
 
     @Autowired
     private ObjectMapper mapper;
@@ -35,95 +38,115 @@ class BookControllerTest {
 
     @Test
     void shouldReturnAllBooks() throws Exception {
-        List<BookDto> books = List.of(new BookDto(1, "Book_1", null, null));
-        Mockito.when(bookService.getAllBooks()).thenReturn(books);
+        List<BookDto> books = List.of(new BookDto(ObjectId.get().toHexString(), "Book_1", null, null));
+        Mockito.when(bookService.getAllBooks()).thenReturn(Flux.fromIterable(books));
 
         String expectedResult = mapper.writeValueAsString(books);
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/book"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+        this.webClient.get().uri("/api/book").accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json(expectedResult);
     }
 
     @Test
     void shouldReturnBook() throws Exception {
-        BookDto bookDto = new BookDto(1, "Book_1", null, null);
-        Mockito.when(bookService.getBookById(Mockito.eq(1L))).thenReturn(Optional.of(bookDto));
+        String bookId = ObjectId.get().toHexString();
+        BookDto bookDto = new BookDto(bookId, "Book_1", null, null);
+        Mockito.when(bookService.getBookById(Mockito.eq(bookId))).thenReturn(Mono.just(bookDto));
 
         String expectedResult = mapper.writeValueAsString(bookDto);
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/book/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+        this.webClient.get().uri("/api/book/" + bookId).accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json(expectedResult);
     }
 
     @Test
-    void shouldNotReturnAnyBook() throws Exception {
-        Mockito.when(bookService.getBookById(Mockito.eq(1L))).thenReturn(Optional.empty());
+    void shouldNotReturnAnyBook() {
+        String bookId = ObjectId.get().toHexString();
+        Mockito.when(bookService.getBookById(Mockito.eq(bookId))).thenReturn(Mono.empty());
 
-        mvc.perform(MockMvcRequestBuilders.get("/api/book/1"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        this.webClient.get().uri("/api/book/" + bookId).accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+
+    @Test
+    void shouldDeleteBook() {
+        String bookId = ObjectId.get().toHexString();
+        Mockito.when(bookService.deleteBooks(Mockito.anySet())).thenReturn(Mono.empty());
+
+        this.webClient.delete().uri("/api/book/" + bookId).accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isNoContent()
+                .expectBody().isEmpty();
+
+        Mockito.verify(bookService, Mockito.times(1)).deleteBooks(Mockito.eq(Set.of(bookId)));
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void shouldCreateBook() throws Exception {
-        Mockito.when(bookService.createBook(Mockito.any())).thenReturn(1L);
+        String bookId = ObjectId.get().toHexString();
+        Mockito.when(bookService.createBook(Mockito.any())).thenReturn(Mono.just(bookId));
 
         CreateBookDto expectedDto = new CreateBookDto("book_1", null, null);
         String requestBody = mapper.writeValueAsString(expectedDto);
 
-        mvc.perform(
-                        MockMvcRequestBuilders.post("/api/book")
-                                .content(requestBody)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.header().string("Location", "/api/book/1"))
-                .andExpect(MockMvcResultMatchers.content().string(""));
+        this.webClient.post().uri("/api/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(requestBody))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectHeader().location("/api/book/" + bookId)
+                .expectBody().isEmpty();
 
-        ArgumentCaptor<CreateBookDto> captorParam = ArgumentCaptor.forClass(CreateBookDto.class);
+        ArgumentCaptor<Mono> captorParam = ArgumentCaptor.forClass(Mono.class);
         Mockito.verify(bookService).createBook(captorParam.capture());
 
-        CreateBookDto actualDto = captorParam.getValue();
+        Mono<CreateBookDto> actualDtoMono = captorParam.getValue();
 
-        Assertions.assertThat(actualDto).usingRecursiveComparison().isEqualTo(expectedDto);
+        StepVerifier
+                .create(actualDtoMono)
+                .assertNext(actualDto -> Assertions.assertThat(actualDto).usingRecursiveComparison().isEqualTo(expectedDto))
+                .expectComplete()
+                .verify();
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void shouldEditBook() throws Exception {
-        BookDto expectedDto = new BookDto(1L, "title_New", null, null);
-        Mockito.when(bookService.updateBook(Mockito.eq(1L), Mockito.any())).thenReturn(expectedDto);
+        String bookId = ObjectId.get().toHexString();
+        BookDto expectedDto = new BookDto(bookId, "title_New", null, null);
+        Mockito.when(bookService.updateBook(Mockito.eq(bookId), Mockito.any())).thenReturn(Mono.just(expectedDto));
 
         UpdateBookDto updateBookDto = new UpdateBookDto("title_New", null, null);
         String requestBody = mapper.writeValueAsString(updateBookDto);
 
         String expectedResult = mapper.writeValueAsString(expectedDto);
 
-        mvc.perform(
-                        MockMvcRequestBuilders.put("/api/book/1")
-                                .content(requestBody)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expectedResult));
+        this.webClient.put().uri("/api/book/"+bookId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(requestBody))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json(expectedResult);
 
-        ArgumentCaptor<Long> captorParamId = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<UpdateBookDto> captorParamDto = ArgumentCaptor.forClass(UpdateBookDto.class);
+        ArgumentCaptor<String> captorParamId = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Mono> captorParamDto = ArgumentCaptor.forClass(Mono.class);
         Mockito.verify(bookService).updateBook(captorParamId.capture(), captorParamDto.capture());
 
-        Long actualId = captorParamId.getValue();
-        UpdateBookDto actualDto = captorParamDto.getValue();
+        String actualId = captorParamId.getValue();
+        Assertions.assertThat(actualId).isEqualTo(bookId);
 
-        Assertions.assertThat(actualId).isEqualTo(1L);
-        Assertions.assertThat(actualDto).usingRecursiveComparison().isEqualTo(updateBookDto);
-    }
-
-    @Test
-    void shouldDeleteBook() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete("/api/book/1"))
-                .andExpect(MockMvcResultMatchers.status().isNoContent())
-                .andExpect(MockMvcResultMatchers.content().string(""));
-
-        Mockito.verify(bookService, Mockito.times(1)).deleteBooks(Mockito.eq(Set.of(1L)));
+        Mono<UpdateBookDto> actualDtoMono = captorParamDto.getValue();
+        StepVerifier
+                .create(actualDtoMono)
+                .assertNext(actualDto -> Assertions.assertThat(actualDto).usingRecursiveComparison().isEqualTo(updateBookDto))
+                .expectComplete()
+                .verify();
     }
 }

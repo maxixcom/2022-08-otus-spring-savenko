@@ -6,20 +6,16 @@ import io.github.maxixcom.otus.booklib.domain.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Data
 @AllArgsConstructor
 public class UpdateBookDto {
-    @NotBlank
-    @Size(max = 255)
     private String title;
 
-    private Long authorId;
+    private String authorId;
 
-    private Long genreId;
+    private String genreId;
 
     public static UpdateBookDto fromDomainObject(Book book) {
         return new UpdateBookDto(
