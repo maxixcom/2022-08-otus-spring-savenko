@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
                     Book book = new Book(null, createBookDto.getTitle(), null, null);
 
                     return updateBookWithAuthorAndGenre(
-                            Mono.just(book),
+                            book,
                             getAuthorByIdOrCreateNew(createBookDto.getAuthorId()),
                             getGenreByIdOrCreateNew(createBookDto.getGenreId())
                     );
@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
                     book.setTitle(updateBookDto.getTitle());
 
                     return updateBookWithAuthorAndGenre(
-                            Mono.just(book),
+                            book,
                             getAuthorByIdOrCreateNew(updateBookDto.getAuthorId()),
                             getGenreByIdOrCreateNew(updateBookDto.getGenreId())
                     );
@@ -86,16 +86,15 @@ public class BookServiceImpl implements BookService {
                 .defaultIfEmpty(new Genre());
     }
 
-    private Mono<Book> updateBookWithAuthorAndGenre(Mono<Book> bookMono, Mono<Author> authorMono, Mono<Genre> genreMono) {
+    private Mono<Book> updateBookWithAuthorAndGenre(Book book, Mono<Author> authorMono, Mono<Genre> genreMono) {
         return Mono
-                .zip(bookMono, authorMono, genreMono)
+                .zip(authorMono, genreMono)
                 .map(data -> {
-                    Book book = data.getT1();
-                    Author author = Optional.of(data.getT2())
+                    Author author = Optional.of(data.getT1())
                             .filter(o -> o.getId() != null)
                             .orElse(null);
 
-                    Genre genre = Optional.of(data.getT3())
+                    Genre genre = Optional.of(data.getT2())
                             .filter(o -> o.getId() != null)
                             .orElse(null);
 
