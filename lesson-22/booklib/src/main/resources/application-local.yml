@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      host: server
+      username: root
+      password: scout
+      authentication-database: admin
+
+demo-data:
+  load: true

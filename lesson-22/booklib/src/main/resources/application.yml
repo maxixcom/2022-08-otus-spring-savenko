@@ -1,0 +1,12 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: 8080
+
+data:
+  mongodb:
+    database: booklib
+
+demo-data:
+  load: true
