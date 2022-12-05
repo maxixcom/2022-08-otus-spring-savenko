@@ -17,3 +17,4 @@
 10. [Spring MVC View](lesson-18/booklib/)
 11. [Современные приложения на Spring MVC](lesson-19/)
 12. [Spring WebFlux](lesson-22/)
+13. [Spring Security: Механизмы аутентификации](lesson-25/)

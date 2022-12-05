@@ -4,8 +4,8 @@ import io.github.maxixcom.otus.booklib.dto.BookDto;
 import io.github.maxixcom.otus.booklib.dto.CreateBookDto;
 import io.github.maxixcom.otus.booklib.dto.UpdateBookDto;
 import io.github.maxixcom.otus.booklib.service.AuthorService;
-import io.github.maxixcom.otus.booklib.service.GenreService;
 import io.github.maxixcom.otus.booklib.service.BookService;
+import io.github.maxixcom.otus.booklib.service.GenreService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -37,6 +38,13 @@ class BookControllerTest {
     private GenreService genreService;
 
     @Test
+    void listPageRequiresAuthentication() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "user")
+    @Test
     void shouldReturnBookList() throws Exception {
         List<BookDto> bookDtoList = List.of(
                 new BookDto(1, "title_1", null, null),
@@ -57,6 +65,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("title_2");
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldReturnCreatePage() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/create"))
@@ -69,6 +78,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("<title>Create book</title>");
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldCreateBook() throws Exception {
         mvc.perform(MockMvcRequestBuilders
@@ -91,6 +101,7 @@ class BookControllerTest {
         );
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldReturnEditPage_404() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -101,6 +112,7 @@ class BookControllerTest {
                 .andReturn();
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldReturnEditPage() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -117,6 +129,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("<title>Edit book</title>");
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldEditBook() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -144,6 +157,7 @@ class BookControllerTest {
 
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldReturnDeletePage_404() throws Exception {
         Mockito.when(bookService.getBookById(1))
@@ -154,6 +168,7 @@ class BookControllerTest {
                 .andReturn();
     }
 
+    @WithMockUser(username = "user")
     @Test
     void shouldReturnDeletePage() throws Exception {
         Mockito.when(bookService.getBookById(1))
@@ -166,6 +181,7 @@ class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     void shouldDeleteBook() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/delete").param("id", "1"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
@@ -177,4 +193,5 @@ class BookControllerTest {
 
         Assertions.assertThat(captorParam.getValue()).containsAll(Set.of(1L));
     }
+
 }

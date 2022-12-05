@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-12-05--0001--user-seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_user_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-12-05--0001--user-table
+      author: maxix
+      createTable:
+        tableName: t_user
+        columns:
+          - column:
+              name: id
+              type: bigint
+              defaultValueSequenceNext: seq_user_id
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_user
+          - column:
+              name: username
+              type: varchar(150)
+          - column:
+              name: password
+              type: varchar(150)
+
+
+  - changeSet:
+      id: 2022-12-05--0001--user-ux-username
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+            unique: true
+            indexName: ux_username
+            tableName: t_user
