@@ -13,7 +13,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
         http
-//                .csrf().disable()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .formLogin()

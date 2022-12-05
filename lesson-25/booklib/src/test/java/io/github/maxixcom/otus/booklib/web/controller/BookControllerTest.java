@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 @WebMvcTest(BookController.class)
 class BookControllerTest {
     @Autowired
@@ -86,6 +88,7 @@ class BookControllerTest {
                         .param("title", "title_1")
                         .param("authorId", "1")
                         .param("genreId", "2")
+                        .with(csrf())
                 )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 
@@ -141,6 +144,7 @@ class BookControllerTest {
                         .param("title", "title_1_updated")
                         .param("authorId", "1")
                         .param("genreId", "2")
+                        .with(csrf())
                 )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 
@@ -183,7 +187,7 @@ class BookControllerTest {
     @Test
     @WithMockUser
     void shouldDeleteBook() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.post("/delete").param("id", "1"))
+        mvc.perform(MockMvcRequestBuilders.post("/delete").param("id", "1").with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andReturn();
 
