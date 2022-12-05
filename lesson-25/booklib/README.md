@@ -57,3 +57,12 @@ java -jar ./build/libs/booklib-0.0.1-SNAPSHOT.jar
 ```shell
 ./gradlew distZip
 ```
+
+## Пользователь для входа
+
+Миграция создает первоначального пользователя с данными:
+
+```
+username: user
+password: pass
+```
