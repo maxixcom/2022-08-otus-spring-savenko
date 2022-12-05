@@ -45,7 +45,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnBookList() throws Exception {
         List<BookDto> bookDtoList = List.of(
@@ -67,7 +67,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("title_2");
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnCreatePage() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/create"))
@@ -80,7 +80,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("<title>Create book</title>");
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldCreateBook() throws Exception {
         mvc.perform(MockMvcRequestBuilders
@@ -104,7 +104,7 @@ class BookControllerTest {
         );
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnEditPage_404() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -115,7 +115,7 @@ class BookControllerTest {
                 .andReturn();
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnEditPage() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -132,7 +132,7 @@ class BookControllerTest {
         Assertions.assertThat(content).containsSequence("<title>Edit book</title>");
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldEditBook() throws Exception {
         Mockito.when(bookService.getBookByIdForUpdate(1))
@@ -161,7 +161,7 @@ class BookControllerTest {
 
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnDeletePage_404() throws Exception {
         Mockito.when(bookService.getBookById(1))
@@ -172,7 +172,7 @@ class BookControllerTest {
                 .andReturn();
     }
 
-    @WithMockUser(username = "user")
+    @WithMockUser
     @Test
     void shouldReturnDeletePage() throws Exception {
         Mockito.when(bookService.getBookById(1))
