@@ -39,12 +39,6 @@ class BookControllerTest {
     @MockBean
     private GenreService genreService;
 
-    @Test
-    void listPageRequiresAuthentication() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-    }
-
     @WithMockUser
     @Test
     void shouldReturnBookList() throws Exception {
