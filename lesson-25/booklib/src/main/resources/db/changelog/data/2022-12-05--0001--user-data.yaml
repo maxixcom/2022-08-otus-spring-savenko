@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-12-05--0001--user
+      author: maxix
+      context: dev
+      runOnChange: true
+      loadUpdateData:
+        primaryKey: id
+        file: data/2022-12-05--0001--user.csv
+        relativeToChangelogFile: true
+        separator: ;
+        quotChar: '"'
+        seperator: ';'
+        encoding: UTF-8
+        tableName: t_user
