@@ -3,7 +3,6 @@ package io.github.maxixcom.otus.booklib.service.security;
 import io.github.maxixcom.otus.booklib.domain.User;
 import io.github.maxixcom.otus.booklib.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         org.springframework.security.core.userdetails.User
                                 .withUsername(user.getUsername())
                                 .password(user.getPassword())
-                                .authorities(new SimpleGrantedAuthority(user.getRole()))
+                                .roles(user.getRole())
                                 .build()
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
