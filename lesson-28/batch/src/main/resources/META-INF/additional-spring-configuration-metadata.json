@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "target.authors-collection",
+      "type": "java.lang.String",
+      "description": "Mongo collection for authors."
+    },
+    {
+      "name": "target.genres-collection",
+      "type": "java.lang.String",
+      "description": "Mongo collection for genres."
+    },
+    {
+      "name": "target.books-collection",
+      "type": "java.lang.String",
+      "description": "Mongo collection for books."
+    }
+  ] }

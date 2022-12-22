@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+
+  liquibase:
+    enabled: true
+    contexts: dev
+
+  h2:
+    console:
+      enabled: false
+      path: /h2-console
+
+  data:
+    mongodb:
+      host: server
+      username: root
+      password: scout
+      database: booklib
+      authentication-database: admin
+
+#  batch:
+#    job:
+#      enabled: false
+
+#logging:
+#  level:
+#    ROOT: ERROR
+#    liquibase: DEBUG
