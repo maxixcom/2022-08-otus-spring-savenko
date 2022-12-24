@@ -8,8 +8,11 @@ import io.github.maxixcom.otus.batch.domain.Genre;
 import io.github.maxixcom.otus.batch.mongo.document.AuthorDocument;
 import io.github.maxixcom.otus.batch.mongo.document.BookDocument;
 import io.github.maxixcom.otus.batch.mongo.document.GenreDocument;
+import io.github.maxixcom.otus.batch.service.mongo.AuthorCachingService;
+import io.github.maxixcom.otus.batch.service.mongo.GenreCachingService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,20 +24,22 @@ import org.springframework.data.mongodb.core.query.Query;
 @SpringBootTest(classes = BookItemProcessor.class)
 class BookItemProcessorTest {
     @MockBean
-    private MongoTemplate mongoTemplate;
-    @MockBean
     private AuthorsCollectionProvider authorsCollectionProvider;
     @MockBean
     private GenresCollectionProvider genresCollectionProvider;
     @Autowired
     private BookItemProcessor bookItemProcessor;
+    @MockBean
+    private AuthorCachingService authorCachingService;
+    @MockBean
+    private GenreCachingService genreCachingService;
 
     @Test
     void process() throws Exception {
-        Mockito.when(mongoTemplate.findOne(Mockito.any(), Mockito.eq(AuthorDocument.class), Mockito.any()))
+        Mockito.when(authorCachingService.findCaching(Mockito.eq("Author name")))
                 .thenReturn(new AuthorDocument("authorId", "Author name"));
 
-        Mockito.when(mongoTemplate.findOne(Mockito.any(), Mockito.eq(GenreDocument.class), Mockito.any()))
+        Mockito.when(genreCachingService.findCaching(Mockito.eq("Genre title")))
                 .thenReturn(new GenreDocument("genreId", "Genre title"));
 
         Book book = new Book();

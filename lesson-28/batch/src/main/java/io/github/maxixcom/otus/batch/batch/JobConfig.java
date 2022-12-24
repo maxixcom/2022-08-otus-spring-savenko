@@ -37,16 +37,18 @@ public class JobConfig {
 
     @Bean
     Job transferDataToMongo(
-            @Qualifier("cleanUpStep") Step cleanUpStep,
+            Step cleanUpStep,
             Flow transferAuthorsFlow,
             Flow transferGenresFlow,
-            Step transferBooksStep
+            Step transferBooksStep,
+            Step warmCacheStep
     ) {
         return jobBuilderFactory.get(JOB_NAME)
                 .incrementer(new RunIdIncrementer())
                 .flow(cleanUpStep)
                 .split(new SimpleAsyncTaskExecutor())
                 .add(transferAuthorsFlow, transferGenresFlow)
+                .next(warmCacheStep)
                 .next(transferBooksStep)
                 .end()
                 .build();
