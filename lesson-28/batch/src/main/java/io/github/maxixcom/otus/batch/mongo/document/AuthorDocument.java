@@ -3,7 +3,6 @@ package io.github.maxixcom.otus.batch.mongo.document;
 import io.github.maxixcom.otus.batch.domain.Author;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Data

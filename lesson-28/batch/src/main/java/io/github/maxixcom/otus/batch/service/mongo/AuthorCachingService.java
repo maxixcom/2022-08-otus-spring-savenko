@@ -15,11 +15,8 @@ public class AuthorCachingService {
     private final MongoTemplate mongoTemplate;
     private final AuthorsCollectionProvider authorsCollectionProvider;
 
-    private static int count=0;
-
     @Cacheable(value = "author", key = "#name")
     public AuthorDocument findCaching(String name) {
-        System.out.println("Called "+ (count++));
         return mongoTemplate.findOne(
                 Query.query(Criteria.where("name").is(name)),
                 AuthorDocument.class,

@@ -1,7 +1,5 @@
 package io.github.maxixcom.otus.batch.service;
 
-import io.github.maxixcom.otus.batch.config.provider.AuthorsCollectionProvider;
-import io.github.maxixcom.otus.batch.config.provider.GenresCollectionProvider;
 import io.github.maxixcom.otus.batch.domain.Author;
 import io.github.maxixcom.otus.batch.domain.Book;
 import io.github.maxixcom.otus.batch.domain.Genre;
@@ -12,21 +10,13 @@ import io.github.maxixcom.otus.batch.service.mongo.AuthorCachingService;
 import io.github.maxixcom.otus.batch.service.mongo.GenreCachingService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 
 @SpringBootTest(classes = BookItemProcessor.class)
 class BookItemProcessorTest {
-    @MockBean
-    private AuthorsCollectionProvider authorsCollectionProvider;
-    @MockBean
-    private GenresCollectionProvider genresCollectionProvider;
     @Autowired
     private BookItemProcessor bookItemProcessor;
     @MockBean
