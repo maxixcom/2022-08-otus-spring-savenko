@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-10-05--0001--genre-seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_genre_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-10-05--0001--genre-table
+      author: maxix
+      createTable:
+        tableName: genre
+        columns:
+          - column:
+              name: id
+              type: bigint
+              defaultValueSequenceNext: seq_genre_id
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_genre
+          - column:
+              name: title
+              type: varchar(50)
+
+  - changeSet:
+      id: 2022-10-05--0001--genre-ux-genre-title
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: title
+            unique: true
+            indexName: ux_genre_title
+            tableName: genre

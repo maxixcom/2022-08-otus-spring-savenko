@@ -19,3 +19,4 @@
 12. [Spring WebFlux](lesson-22/)
 13. [Spring Security: Механизмы аутентификации](lesson-25/)
 14. [Spring Security: ACL](lesson-27/)
+15. [Spring Batch](lesson-28/batch)
