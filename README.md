@@ -20,3 +20,4 @@
 13. [Spring Security: Механизмы аутентификации](lesson-25/)
 14. [Spring Security: ACL](lesson-27/)
 15. [Spring Batch](lesson-28/batch)
+16. [Spring Integration: Endpoints и Flow Components](lesson-31/enrich)
