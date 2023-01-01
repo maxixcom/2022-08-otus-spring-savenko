@@ -1,0 +1,40 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: 8080
+
+spring:
+  #  profiles:
+  #    active: dev
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+
+  liquibase:
+    enabled: true
+    contexts: dev
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  data:
+    rest:
+      base-path: /datarest
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+#logging:
+#  level:
+#    ROOT: ERROR
+#    liquibase: DEBUG
+
