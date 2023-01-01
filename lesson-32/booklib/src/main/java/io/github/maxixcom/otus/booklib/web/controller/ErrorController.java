@@ -1,4 +1,4 @@
-package io.github.maxixcom.otus.booklib.rest.controller;
+package io.github.maxixcom.otus.booklib.web.controller;
 
 import io.github.maxixcom.otus.booklib.exception.BookNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public BookNotFoundException bookNotFoundError(BookNotFoundException exception) {
-        return exception;
+    public void bookNotFoundError() {
     }
 }
