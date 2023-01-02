@@ -21,3 +21,5 @@
 14. [Spring Security: ACL](lesson-27/)
 15. [Spring Batch](lesson-28/batch)
 16. [Spring Integration: Endpoints и Flow Components](lesson-31/enrich)
+17. [Монолиты vs. Microservices (Round 2), Spring Boot Actuator - must have в микросервисах](lesson-32/booklib)
+
