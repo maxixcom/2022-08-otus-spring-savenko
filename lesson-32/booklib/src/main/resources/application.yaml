@@ -38,7 +38,6 @@ management:
     web:
       exposure:
         include: metrics,logfile,health
-#        include: "*"
   endpoint:
     health:
       show-components: always
