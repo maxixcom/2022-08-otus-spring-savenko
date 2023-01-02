@@ -37,7 +37,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: logfile,health
+        include: metrics,logfile,health
 #        include: "*"
   endpoint:
     health:
