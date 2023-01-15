@@ -1,0 +1,81 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-10-05--0003--book-seq
+      author: maxix
+      changes:
+        - createSequence:
+            sequenceName: seq_book_id
+            dataType: bigint
+            startValue: 100
+
+  - changeSet:
+      id: 2022-10-05--0003--book-table
+      author: maxix
+      createTable:
+        tableName: book
+        columns:
+          - column:
+              name: id
+              type: bigint
+              defaultValueSequenceNext: seq_book_id
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_book
+          - column:
+              name: title
+              type: varchar(150)
+          - column:
+              name: genre_id
+              type: bigint
+          - column:
+              name: author_id
+              type: bigint
+
+  - changeSet:
+      id: 2022-10-05--0003--book-idx-fk-genre
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: genre_id
+            indexName: idx_fk_book_genre
+            tableName: book
+
+  - changeSet:
+      id: 2022-10-05--0003--book-fk-genre
+      author: maxix
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: genre_id
+            baseTableName: book
+            constraintName: fk_book_genre
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: genre
+
+  - changeSet:
+      id: 2022-10-05--0003--book-idx-fk-author
+      author: maxix
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: author_id
+            indexName: idx_fk_book_author
+            tableName: book
+
+  - changeSet:
+      id: 2022-10-05--0003--book-fk-author
+      author: maxix
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: book
+            constraintName: fk_book_author
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: author

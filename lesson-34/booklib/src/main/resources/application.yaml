@@ -1,0 +1,34 @@
+spring:
+  #  profiles:
+  #    active: dev
+
+#  datasource:
+#    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+
+  liquibase:
+    enabled: true
+    contexts: dev
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  data:
+    rest:
+      base-path: /datarest
+
+#logging:
+#  level:
+#    ROOT: ERROR
+#    liquibase: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,health
+  endpoint:
+    health:
+      show-components: always
