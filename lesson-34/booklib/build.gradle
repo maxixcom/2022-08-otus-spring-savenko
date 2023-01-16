@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
     id 'application'
+    id 'com.google.cloud.tools.jib' version '3.3.1'
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"
 }
 
 group = 'io.github.maxixcom.otus'
@@ -53,4 +55,22 @@ tasks.named('test') {
 
 application {
     mainClass = 'io.github.maxixcom.otus.booklib.BooklibApplication'
+}
+
+
+gitProperties {
+    extProperty = 'gitProps' // git properties will be put in a map at project.ext.gitProps
+}
+
+jib{
+    from {
+        image="openjdk:17-jdk"
+    }
+    to {
+        image= project.provider { "jib/${project.name}:" + project.ext.gitProps['git.branch']}
+    }
+    container {
+        ports = ['8080']
+        creationTime = project.provider { project.ext.gitProps['git.commit.time'] }
+    }
 }
