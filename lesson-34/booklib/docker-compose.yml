@@ -1,10 +1,8 @@
 version: '3'
 services:
   app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-    image: "jib/booklib:0.0.1-SNAPSHOT"
+# Change image according your git branch. (jib/booklib:<git branch name>)
+    image: "jib/booklib:lesson-34-hometask-jib"
     ports:
       - "8080:8080"
     environment:

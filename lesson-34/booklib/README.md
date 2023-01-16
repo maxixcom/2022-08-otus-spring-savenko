@@ -23,6 +23,12 @@
 
 За основу взято приложение "Библиотека" MVC.
 
+Сборка образа:
+
+```shell
+./gradlew jibDockerBuild
+```
+
 Запуск через docker compose:
 
 ```shell
