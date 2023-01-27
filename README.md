@@ -23,3 +23,4 @@
 16. [Spring Integration: Endpoints и Flow Components](lesson-31/enrich)
 17. [Монолиты vs. Microservices (Round 2), Spring Boot Actuator - must have в микросервисах](lesson-32/booklib)
 18. [Docker, оркестрация, облака, облачные хостинги](lesson-34/booklib)
+19. [Zuul, Hystrix Circuit Breaker, Sleuth, Zipkin, Hystrix Dashboard, Secure Configuration Properties](lesson-37/booklib)

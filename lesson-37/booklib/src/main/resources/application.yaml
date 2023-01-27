@@ -1,0 +1,56 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: 8080
+
+spring:
+  #  profiles:
+  #    active: dev
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+
+  liquibase:
+    enabled: true
+    contexts: dev
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+#logging:
+#  level:
+#    ROOT: ERROR
+#    liquibase: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        sliding-window-size: 4
+        failure-rate-threshold: 50
+        slow-call-duration-threshold: 3
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+
+  endpoint:
+    health:
+      show-details: always
+
+  health:
+    circuitbreakers:
+      enabled: true
