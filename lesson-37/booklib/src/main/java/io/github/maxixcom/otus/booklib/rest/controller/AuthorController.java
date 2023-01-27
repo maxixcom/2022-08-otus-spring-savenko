@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthorController {
     private final AuthorService authorService;
-
-    private final Random r = new Random();
 
     @CircuitBreaker(name = "listAuthors", fallbackMethod = "fallbackListAuthors")
     @GetMapping("/api/author")
