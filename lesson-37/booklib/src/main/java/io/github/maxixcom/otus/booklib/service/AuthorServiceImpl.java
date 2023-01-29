@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
+    @CircuitBreaker(name = "getAllAuthors", fallbackMethod = "getAllAuthorsFallback")
     @Transactional(readOnly = true)
     @Override
     public List<AuthorDto> getAllAuthors() {
@@ -22,5 +24,9 @@ public class AuthorServiceImpl implements AuthorService {
                 .stream()
                 .map(AuthorDto::fromDomainObject)
                 .collect(Collectors.toList());
+    }
+
+    List<AuthorDto> getAllAuthorsFallback(Exception exception) {
+        return Collections.emptyList();
     }
 }

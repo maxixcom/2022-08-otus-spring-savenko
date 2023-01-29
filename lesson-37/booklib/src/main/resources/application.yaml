@@ -26,11 +26,6 @@ spring:
       ddl-auto: validate
     show-sql: true
 
-#logging:
-#  level:
-#    ROOT: ERROR
-#    liquibase: DEBUG
-
 resilience4j:
   circuitbreaker:
     configs:
@@ -38,10 +33,9 @@ resilience4j:
         register-health-indicator: true
         sliding-window-size: 4
         failure-rate-threshold: 50
-        slow-call-duration-threshold: 3
+        slow-call-duration-threshold: 1000
         ignore-exceptions:
           - io.github.maxixcom.otus.booklib.exception.BookNotFoundException
-
 
 management:
   endpoints:
@@ -56,3 +50,10 @@ management:
   health:
     circuitbreakers:
       enabled: true
+
+logging:
+  level:
+    io.github.maxixcom.otus.booklib: DEBUG
+#    ROOT: ERROR
+#    liquibase: DEBUG
+

@@ -1,6 +1,7 @@
 package io.github.maxixcom.otus.booklib.rest.controller;
 
 import io.github.maxixcom.otus.booklib.exception.BookNotFoundException;
+import io.github.maxixcom.otus.booklib.exception.SlowException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,4 +16,5 @@ public class ErrorController extends ResponseEntityExceptionHandler {
     public BookNotFoundException bookNotFoundError(BookNotFoundException exception) {
         return exception;
     }
+
 }
